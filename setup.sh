@@ -5,33 +5,30 @@ RED='\033[31m'
 YELLOW='\033[33m'
 GREEN='\033[32m'
 
-# Check if the home directory and linuxtoolbox folder exist, create them if they don't
-LINUXTOOLBOXDIR="$HOME/linuxtoolbox"
+# Define the repository path and configuration file
+REPO_DIR="$HOME/mybash"
+REPO_URL="https://github.com/dhruvmistry2000/mybash"
+STARSHIP_TOML_URL="https://raw.githubusercontent.com/dhruvmistry2000/mybash/main/starship.toml"
 
-if [ ! -d "$LINUXTOOLBOXDIR" ]; then
-    echo "${YELLOW}Creating linuxtoolbox directory: $LINUXTOOLBOXDIR${RC}"
-    mkdir -p "$LINUXTOOLBOXDIR"
-    echo "${GREEN}linuxtoolbox directory created: $LINUXTOOLBOXDIR${RC}"
-fi
-
-if [ -d "$LINUXTOOLBOXDIR/mybash" ]; then rm -rf "$LINUXTOOLBOXDIR/mybash"; fi
-
-echo "${YELLOW}Cloning mybash repository into: $LINUXTOOLBOXDIR/mybash${RC}"
-git clone https://github.com/ChrisTitusTech/mybash "$LINUXTOOLBOXDIR/mybash"
-if [ $? -eq 0 ]; then
-    echo "${GREEN}Successfully cloned mybash repository${RC}"
+# Check if the repository directory exists, create it if it doesn't
+if [ ! -d "$REPO_DIR" ]; then
+    echo "${YELLOW}Cloning mybash repository into: $REPO_DIR${RC}"
+    git clone "$REPO_URL" "$REPO_DIR"
+    if [ $? -eq 0 ]; then
+        echo "${GREEN}Successfully cloned mybash repository${RC}"
+    else
+        echo "${RED}Failed to clone mybash repository${RC}"
+        exit 1
+    fi
 else
-    echo "${RED}Failed to clone mybash repository${RC}"
-    exit 1
+    echo "${GREEN}Repository already exists at: $REPO_DIR${RC}"
 fi
 
-# add variables to top level so can easily be accessed by all functions
+# Define variables for commands and paths
 PACKAGER=""
 SUDO_CMD=""
 SUGROUP=""
-GITPATH=""
-
-cd "$LINUXTOOLBOXDIR/mybash" || exit
+GITPATH="$REPO_DIR"
 
 command_exists() {
     command -v "$1" >/dev/null 2>&1
@@ -80,7 +77,6 @@ checkEnv() {
     fi
 
     ## Check SuperUser Group
-
     SUPERUSERGROUP='wheel sudo root'
     for sug in $SUPERUSERGROUP; do
         if groups | grep -q "$sug"; then
@@ -138,13 +134,13 @@ installDepend() {
     fi
 
     # Check to see if the FiraCode Nerd Font is installed (Change this to whatever font you would like)
-    FONT_NAME="FiraCode Nerd Font"
+    FONT_NAME="Hack Nerd Font"
     if fc-list :family | grep -iq "$FONT_NAME"; then
         echo "Font '$FONT_NAME' is installed."
     else
         echo "Installing font '$FONT_NAME'"
         # Change this URL to correspond with the correct font
-        FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/FiraCode.zip"
+        FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/Hack.zip"
         FONT_DIR="$HOME/.local/share/fonts"
         wget $FONT_URL -O ${FONT_NAME}.zip
         unzip ${FONT_NAME}.zip -d $FONT_NAME
@@ -189,9 +185,7 @@ installZoxide() {
 }
 
 install_additional_dependencies() {
-    # we have PACKAGER so just use it
-    # for now just going to return early as we have already installed neovim in `installDepend`
-    # so I am not sure why we are trying to install it again
+    # Additional dependencies installation
     return
    case "$PACKAGER" in
         *apt)
@@ -257,8 +251,8 @@ linkConfig() {
         echo "${RED}Failed to create symbolic link for .bashrc${RC}"
         exit 1
     }
-    ln -svf "$GITPATH/starship.toml" "$USER_HOME/.config/starship.toml" || {
-        echo "${RED}Failed to create symbolic link for starship.toml${RC}"
+    curl -o "$USER_HOME/.config/starship.toml" "$STARSHIP_TOML_URL" || {
+        echo "${RED}Failed to download starship.toml${RC}"
         exit 1
     }
 }
@@ -271,7 +265,7 @@ install_additional_dependencies
 create_fastfetch_config
 
 if linkConfig; then
-    echo "${GREEN}Done!\nrestart your shell to see the changes.${RC}"
+    echo "${GREEN}Done! Restart your shell to see the changes.${RC}"
 else
     echo "${RED}Something went wrong!${RC}"
 fi
