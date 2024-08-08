@@ -8,7 +8,6 @@ GREEN='\033[32m'
 # Define the repository path and configuration file
 REPO_DIR="$HOME/mybash"
 REPO_URL="https://github.com/dhruvmistry2000/mybash"
-STARSHIP_TOML_URL="https://raw.githubusercontent.com/dhruvmistry2000/mybash/main/starship.toml"
 
 # Check if the repository directory exists, create it if it doesn't
 if [ ! -d "$REPO_DIR" ]; then
@@ -251,8 +250,8 @@ linkConfig() {
         echo "${RED}Failed to create symbolic link for .bashrc${RC}"
         exit 1
     }
-    curl -o "$USER_HOME/.config/starship.toml" "$STARSHIP_TOML_URL" || {
-        echo "${RED}Failed to download starship.toml${RC}"
+    ln -svf "$GITPATH/starship.toml" "$USER_HOME/.config/starship.toml" || {
+        echo "${RED}Failed to create symbolic link for starship.toml${RC}"
         exit 1
     }
 }
