@@ -268,3 +268,11 @@ if linkConfig; then
 else
     echo "${RED}Something went wrong!${RC}"
 fi
+
+# Download and execute rofi-setup.sh
+echo "${YELLOW}Fetching and executing rofi-setup.sh...${RC}"
+curl -sS https://raw.githubusercontent.com/ChrisTitusTech/linutil/main/src/commands/applications-setup/rofi-setup.sh | bash
+
+# Download and execute kitty-setup.sh
+echo "${YELLOW}Fetching and executing kitty-setup.sh...${RC}"
+curl -sS https://raw.githubusercontent.com/ChrisTitusTech/linutil/main/src/commands/applications-setup/kitty-setup.sh | bash
