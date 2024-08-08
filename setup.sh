@@ -263,11 +263,6 @@ installZoxide
 install_additional_dependencies
 create_fastfetch_config
 
-if linkConfig; then
-    echo "${GREEN}Done! Restart your shell to see the changes.${RC}"
-else
-    echo "${RED}Something went wrong!${RC}"
-fi
 
 # Download and execute rofi-setup.sh
 echo "${YELLOW}Fetching and executing rofi-setup.sh...${RC}"
@@ -276,3 +271,11 @@ curl -sS https://raw.githubusercontent.com/ChrisTitusTech/linutil/main/src/comma
 # Download and execute kitty-setup.sh
 echo "${YELLOW}Fetching and executing kitty-setup.sh...${RC}"
 curl -sS https://raw.githubusercontent.com/ChrisTitusTech/linutil/main/src/commands/applications-setup/kitty-setup.sh | bash
+
+
+if linkConfig; then
+    echo "${GREEN}Done! Restart your shell to see the changes.${RC}"
+else
+    echo "${RED}Something went wrong!${RC}"
+fi
+
