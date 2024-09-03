@@ -263,9 +263,10 @@ installZoxide
 install_additional_dependencies
 create_fastfetch_config
 
-echo "${YELLOW}Giving execute permission to yay-setup.sh and executing it...${RC}"
-chmod +x yay-setup.sh
-./yay-setup.sh
+# echo "${YELLOW}Giving execute permission to yay-setup.sh and executing it...${RC}"
+# chmod +x yay-setup.sh
+# ./yay-setup.sh
+curl -sSL https://raw.githubusercontent.com/dhruvmistry2000/mybash/main/yay_setup.sh | bash
 
 if linkConfig; then
     echo "${GREEN}Done! Restart your shell to see the changes.${RC}"
