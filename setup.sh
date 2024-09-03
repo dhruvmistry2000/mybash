@@ -263,15 +263,9 @@ installZoxide
 install_additional_dependencies
 create_fastfetch_config
 
-
-# Download and execute rofi-setup.sh
-echo "${YELLOW}Fetching and executing rofi-setup.sh...${RC}"
-curl -sS https://raw.githubusercontent.com/ChrisTitusTech/linutil/main/src/commands/applications-setup/rofi-setup.sh | bash
-
-# Download and execute kitty-setup.sh
-echo "${YELLOW}Fetching and executing kitty-setup.sh...${RC}"
-curl -sS https://raw.githubusercontent.com/ChrisTitusTech/linutil/main/src/commands/applications-setup/kitty-setup.sh | bash
-
+echo "${YELLOW}Giving execute permission to yay-setup.sh and executing it...${RC}"
+chmod +x yay-setup.sh
+./yay-setup.sh
 
 if linkConfig; then
     echo "${GREEN}Done! Restart your shell to see the changes.${RC}"
