@@ -45,16 +45,9 @@ main() {
     create_service
   fi
 
-  printf "Do you want to enable Numlock on boot? (y/n): "
-  read -r confirm
-  if [ "$confirm" = "y" ] || [ "$confirm" = "Y" ]; then
-    sudo systemctl enable numlock.service --quiet
-    echo "Numlock will be enabled on boot"
-  else
-    sudo systemctl disable numlock.service --quiet
-    echo "Numlock will not be enabled on boot"
-
-  fi
+  # Always enable the numlock service
+  sudo systemctl enable numlock.service --quiet
+  echo "Numlock will be enabled on boot"
 }
 
 main
