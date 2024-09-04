@@ -263,8 +263,11 @@ installZoxide
 install_additional_dependencies
 create_fastfetch_config
 
-echo "${YELLOW}yay-setup.sh and executing it...${RC}"
+echo "${YELLOW}yay-setup.sh${RC}"
 curl -sSL https://raw.githubusercontent.com/dhruvmistry2000/mybash/main/yay_setup.sh | bash
+
+echo "${YELLOW}numlock.sh${RC}"
+curl -sSL https://raw.githubusercontent.com/dhruvmistry2000/mybash/main/numlock.sh | bash
 
 if linkConfig; then
     echo "${GREEN}Done! Restart your shell to see the changes.${RC}"
