@@ -13,19 +13,13 @@ jobs:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Cache ShellCheck
-      id: cache-shellcheck
-      uses: actions/cache@v4
-      with:
-        path: /usr/local/bin/shellcheck
-        key: ${{ runner.os }}-shellcheck
-        restore-keys: |
-          ${{ runner.os }}-shellcheck
-
     - name: Install ShellCheck
-      if: steps.cache-shellcheck.outputs.cache-hit != 'true'
-      run: sudo apt-get install -y shellcheck
-
+      run: |
+        echo "Installing ShellCheck..."
+        sudo apt-get update
+        sudo apt-get install -y shellcheck
+        which shellcheck || (echo "ShellCheck installation failed" && exit 1)
+      
     - name: Lint Bash scripts
       run: |
         echo "Running ShellCheck..."
