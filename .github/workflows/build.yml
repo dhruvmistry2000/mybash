@@ -20,7 +20,7 @@ jobs:
 
     - name: Build
       run: |
-        go build -v -o myapp ./...
+        go build -v -o myapp .
 
     - name: Package
       run: |
