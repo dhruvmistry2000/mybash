@@ -14,3 +14,4 @@ To apply these configurations, run the following command:
 ```bash
 curl -sSL https://raw.githubusercontent.com/dhruvmistry2000/mybash/main/setup.sh | bash
 ```
+[![Bash Lint](https://github.com/dhruvmistry2000/mybash/actions/workflows/main.yml/badge.svg)](https://github.com/dhruvmistry2000/mybash/actions/workflows/main.yml)
