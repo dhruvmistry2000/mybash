@@ -5,10 +5,7 @@ on: [push, pull_request]
 jobs:
   lint:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        os: [ubuntu-latest, ubuntu-20.04]
-
+    
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
