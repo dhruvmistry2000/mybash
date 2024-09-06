@@ -24,6 +24,14 @@ jobs:
         python -m pip install --upgrade pip
         pip install setuptools wheel
 
+    - name: Check for setup.py
+      run: |
+        if [ ! -f setup.py ]; then
+          echo "Error: setup.py not found in the repository root."
+          echo "Please ensure that setup.py exists in the root directory of your project."
+          exit 1
+        fi
+
     - name: Package file
       run: |
         python setup.py sdist bdist_wheel
