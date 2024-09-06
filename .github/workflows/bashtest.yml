@@ -4,27 +4,43 @@ on: [push, pull_request]
 
 jobs:
   lint:
-    runs-on: ubuntu-latest
     strategy:
       matrix:
-        os: [ubuntu-latest, ubuntu-20.04]
+        distro:
+          - ubuntu-latest
+          - archlinux
+          - fedora-latest
+
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ matrix.distro }}
+      options: --privileged
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
 
-    - name: Cache ShellCheck
-      id: cache-shellcheck
-      uses: actions/cache@v4
-      with:
-        path: /usr/local/bin/shellcheck
-        key: ${{ runner.os }}-shellcheck
-        restore-keys: |
-          ${{ runner.os }}-shellcheck
-
     - name: Install ShellCheck
-      if: steps.cache-shellcheck.outputs.cache-hit != 'true'
-      run: sudo apt-get install -y shellcheck
+      run: |
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          if command -v pacman >/dev/null 2>&1; then
+            # Arch Linux
+            sudo pacman -Syu --noconfirm shellcheck
+          elif command -v dnf >/dev/null 2>&1; then
+            # Fedora
+            sudo dnf install -y ShellCheck
+          elif command -v apt-get >/dev/null 2>&1; then
+            # Ubuntu
+            sudo apt-get update
+            sudo apt-get install -y shellcheck
+          else
+            echo "Unsupported distribution."
+            exit 1
+          fi
+        else
+          echo "Only Linux distributions are supported in this workflow."
+          exit 1
+        fi
 
     - name: Lint Bash scripts
       run: |
@@ -35,4 +51,14 @@ jobs:
           exit 1
         else
           echo "No linting errors found."
+        fi
+
+    - name: Run setup.sh
+      run: |
+        if [ -f ./setup.sh ]; then
+          chmod +x ./setup.sh
+          ./setup.sh
+        else
+          echo "setup.sh not found in the repository."
+          exit 1
         fi
