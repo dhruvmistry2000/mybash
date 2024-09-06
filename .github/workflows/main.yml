@@ -1,0 +1,64 @@
+name: Bash Lint
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    strategy:
+      matrix:
+        distro:
+          - ubuntu-latest
+          - archlinux
+          - fedora-latest
+
+    runs-on: ubuntu-latest
+    container:
+      image: ${{ matrix.distro }}
+      options: --privileged
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Install ShellCheck
+      run: |
+        if [ "$RUNNER_OS" == "Linux" ]; then
+          if command -v pacman >/dev/null 2>&1; then
+            # Arch Linux
+            sudo pacman -Syu --noconfirm shellcheck
+          elif command -v dnf >/dev/null 2>&1; then
+            # Fedora
+            sudo dnf install -y ShellCheck
+          elif command -v apt-get >/dev/null 2>&1; then
+            # Ubuntu
+            sudo apt-get update
+            sudo apt-get install -y shellcheck
+          else
+            echo "Unsupported distribution."
+            exit 1
+          fi
+        else
+          echo "Only Linux distributions are supported in this workflow."
+          exit 1
+        fi
+
+    - name: Lint Bash scripts
+      run: |
+        echo "Running ShellCheck..."
+        find . -name "*.sh" -print0 | xargs -0 shellcheck -f gcc | tee shellcheck.log
+        if grep -q "error:" shellcheck.log; then
+          echo "Linting errors found!"
+          exit 1
+        else
+          echo "No linting errors found."
+        fi
+
+    - name: Run setup.sh
+      run: |
+        if [ -f ./setup.sh ]; then
+          chmod +x ./setup.sh
+          ./setup.sh
+        else
+          echo "setup.sh not found in the repository."
+          exit 1
+        fi
