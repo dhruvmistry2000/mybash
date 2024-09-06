@@ -24,6 +24,12 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-go-
 
+    - name: Initialize Go module
+      run: |
+        if [ ! -f go.mod ]; then
+          go mod init github.com/${{ github.repository }}
+        fi
+
     - name: Verify dependencies
       run: go mod tidy
 
@@ -45,5 +51,3 @@ jobs:
         release_name: Release v${{ github.run_number }}
         draft: false
         prerelease: false
-
-    # ... rest of the workflow remains the same ...
