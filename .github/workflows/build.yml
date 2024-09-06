@@ -37,8 +37,6 @@ jobs:
     - name: Build
       run: go build -v -o myapp .
 
-    # ... rest of the workflow remains the same ...
-
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
@@ -49,3 +47,13 @@ jobs:
         release_name: Release v${{ github.run_number }}
         draft: false
         prerelease: false
+
+    - name: Upload Release Asset
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ steps.create_release.outputs.upload_url }}
+        asset_path: ./myapp
+        asset_name: myapp
+        asset_content_type: application/octet-stream
