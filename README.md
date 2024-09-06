@@ -1,5 +1,7 @@
 # My Bash Configuration
 
+[![Bash Lint](https://github.com/dhruvmistry2000/mybash/actions/workflows/main.yml/badge.svg)](https://github.com/dhruvmistry2000/mybash/actions/workflows/main.yml)
+
 This setup script installs and configures various tools and custom configurations to enhance your bash experience. The script includes:
 
 * Installation of Starship, a customizable shell prompt
@@ -14,4 +16,3 @@ To apply these configurations, run the following command:
 ```bash
 curl -sSL https://raw.githubusercontent.com/dhruvmistry2000/mybash/main/setup.sh | bash
 ```
-[![Bash Lint](https://github.com/dhruvmistry2000/mybash/actions/workflows/main.yml/badge.svg)](https://github.com/dhruvmistry2000/mybash/actions/workflows/main.yml)
