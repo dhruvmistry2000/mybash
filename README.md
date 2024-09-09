@@ -10,6 +10,7 @@ This setup script installs and configures various tools and custom configuration
 * Additional dependencies for a more comprehensive setup
 * Custom configuration for Fastfetch, a tool for fetching system information
 * Custom bash configuration for a personalized shell experience
+* Also add easy setting for wifi and bluetooth
 
 To apply these configurations, run the following command:
 
