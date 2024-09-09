@@ -255,13 +255,29 @@ linkConfig() {
         exit 1
     }
 }
+copyScripts() {
+    SCRIPTS_DIR="$HOME/.scripts"
+    mkdir -p "$SCRIPTS_DIR"
 
+    for script in bluetooth.sh wifi.sh; do
+        SCRIPT_SRC="$GITPATH/$script"
+        SCRIPT_DEST="$SCRIPTS_DIR/$script"
+        if [ -f "$SCRIPT_SRC" ]; then
+            cp "$SCRIPT_SRC" "$SCRIPT_DEST"
+            chmod +x "$SCRIPT_DEST"
+            echo "${GREEN}Copied and set execution permission for $SCRIPT_DEST${RC}"
+        else
+            echo "${RED}$SCRIPT_SRC does not exist. Skipping.${RC}"
+        fi
+    done
+}
 checkEnv
 installDepend
 installStarshipAndFzf
 installZoxide
 install_additional_dependencies
 create_fastfetch_config
+copyScripts
 
 echo "${YELLOW}yay-setup.sh${RC}"
 curl -sSL https://raw.githubusercontent.com/dhruvmistry2000/mybash/main/yay_setup.sh | bash
