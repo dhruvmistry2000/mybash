@@ -50,4 +50,5 @@ main() {
   echo "Numlock will be enabled on boot"
 }
 
+echo "dhruv"
 main
