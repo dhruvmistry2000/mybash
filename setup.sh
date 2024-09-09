@@ -255,22 +255,38 @@ linkConfig() {
         exit 1
     }
 }
-copyScripts() {
-    SCRIPTS_DIR="$HOME/.scripts"
-    mkdir -p "$SCRIPTS_DIR"
 
+copyScripts() {
+    # Define the source and target directories for the scripts
+    SCRIPTS_SRC_DIR="$GITPATH/scripts"
+    SCRIPTS_DEST_DIR="$HOME/.scripts"
+    
+    # Create the target directory if it doesn't exist
+    mkdir -p "$SCRIPTS_DEST_DIR"
+    
+    # Array of scripts to copy
     for script in bluetooth.sh wifi.sh; do
-        SCRIPT_SRC="$GITPATH/$script"
-        SCRIPT_DEST="$SCRIPTS_DIR/$script"
+        # Define source and destination paths
+        SCRIPT_SRC="$SCRIPTS_SRC_DIR/$script"
+        SCRIPT_DEST="$SCRIPTS_DEST_DIR/$script"
+        
+        # Check if the source script exists
         if [ -f "$SCRIPT_SRC" ]; then
+            # Copy the script to the target directory
             cp "$SCRIPT_SRC" "$SCRIPT_DEST"
+            
+            # Set execution permissions on the copied script
             chmod +x "$SCRIPT_DEST"
+            
+            # Output success message
             echo "${GREEN}Copied and set execution permission for $SCRIPT_DEST${RC}"
         else
+            # Output error message if the source script does not exist
             echo "${RED}$SCRIPT_SRC does not exist. Skipping.${RC}"
         fi
     done
 }
+
 checkEnv
 installDepend
 installStarshipAndFzf
