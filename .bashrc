@@ -70,6 +70,8 @@ alias nano='edit'
 alias snano='sedit'
 alias vim='nvim'
 alias linutil='curl -fsSL https://christitus.com/linux | sh'
+alias bluetooth='~/.scripts/bluetooth.sh'
+alias wifi='~/.scripts/wifi.sh'
 
 
 # To have colors for ls and all grep commands such as grep, egrep and zgrep
