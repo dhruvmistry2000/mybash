@@ -297,16 +297,16 @@ fi
 NUMLOCK_SCRIPT="$GITPATH/numlock.sh"
 if [ -f "$COMPILE_SCRIPT" ]; then
     chmod +x "$NUMLOCK_SCRIPT"
-    echo "${YELLOW}Running compile.sh...${RC}"
+    echo "${YELLOW}Running numlock.sh...${RC}"
     "$COMPILE_SCRIPT"
     if [ $? -eq 0 ]; then
-        echo "${GREEN}compile.sh executed successfully${RC}"
+        echo "${GREEN}numlock.sh executed successfully${RC}"
     else
-        echo "${RED}compile.sh execution failed${RC}"
+        echo "${RED}numlock.sh execution failed${RC}"
         exit 1
     fi
 else
-    echo "${RED}compile.sh not found at $NUMLOCK_SCRIPT${RC}"
+    echo "${RED}numlock.sh not found at $NUMLOCK_SCRIPT${RC}"
     exit 1
 fi
 
