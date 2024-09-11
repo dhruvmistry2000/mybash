@@ -2,7 +2,9 @@
 
 # Define color variables for output
 YELLOW='\033[1;33m'
-RC='\033[0m'
+GREEN='\033[1;32m'
+RED='\033[1;31m'
+RC='\033[0m'  # Reset color
 
 # Define the directory name for yay
 YAY_DIR="yay"
@@ -30,7 +32,7 @@ is_yay_installed() {
 if is_arch_based; then
   # Check if yay is installed
   if is_yay_installed; then
-    echo "yay is already installed. Exiting."
+    echo -e "${GREEN}yay is already installed. Exiting.${RC}"
     exit 0
   else
     echo -e "${YELLOW}Starting yay installation${RC}"
@@ -60,8 +62,8 @@ if is_arch_based; then
     cd ..
     rm -rf $YAY_DIR
 
-    echo "yay installation completed successfully!"
+    echo -e "${GREEN}yay installation completed successfully!${RC}"
   fi
 else
-  echo "This script is intended for Arch-based systems only. Exiting."
+  echo -e "${RED}This script is intended for Arch-based systems only. Exiting.${RC}"
 fi
