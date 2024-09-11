@@ -277,38 +277,55 @@ copyScripts() {
     done
 }
 
-# Give execute permissions and run compile.sh
-COMPILE_SCRIPT="$GITPATH/compile.sh"
-if [ -f "$COMPILE_SCRIPT" ]; then
-    chmod +x "$COMPILE_SCRIPT"
-    echo "${YELLOW}Running compile.sh...${RC}"
-    "$COMPILE_SCRIPT"
-    if [ $? -eq 0 ]; then
-        echo "${GREEN}compile.sh executed successfully${RC}"
+imp_scripts() {
+    COMPILE_SCRIPT="$GITPATH/compile.sh"
+    if [ -f "$COMPILE_SCRIPT" ]; then
+        chmod +x "$COMPILE_SCRIPT"
+        echo "${YELLOW}Running compile.sh...${RC}"
+        "$COMPILE_SCRIPT"
+        if [ $? -eq 0 ]; then
+            echo "${GREEN}compile.sh executed successfully${RC}"
+        else
+            echo "${RED}compile.sh execution failed${RC}"
+            exit 1
+        fi
     else
-        echo "${RED}compile.sh execution failed${RC}"
+        echo "${RED}compile.sh not found at $COMPILE_SCRIPT${RC}"
         exit 1
     fi
-else
-    echo "${RED}compile.sh not found at $COMPILE_SCRIPT${RC}"
-    exit 1
-fi
-
-NUMLOCK_SCRIPT="$GITPATH/numlock.sh"
-if [ -f "$COMPILE_SCRIPT" ]; then
-    chmod +x "$NUMLOCK_SCRIPT"
-    echo "${YELLOW}Running numlock.sh...${RC}"
-    "$COMPILE_SCRIPT"
-    if [ $? -eq 0 ]; then
-        echo "${GREEN}numlock.sh executed successfully${RC}"
+    
+    NUMLOCK_SCRIPT="$GITPATH/numlock.sh"
+    if [ -f "$NUMLOCK_SCRIPT" ]; then
+        chmod +x "$NUMLOCK_SCRIPT"
+        echo "${YELLOW}Running numlock.sh...${RC}"
+        "$NUMLOCK_SCRIPT"
+        if [ $? -eq 0 ]; then
+            echo "${GREEN}numlock.sh executed successfully${RC}"
+        else
+            echo "${RED}numlock.sh execution failed${RC}"
+            exit 1
+        fi
     else
-        echo "${RED}numlock.sh execution failed${RC}"
+        echo "${RED}numlock.sh not found at $NUMLOCK_SCRIPT${RC}"
         exit 1
     fi
-else
-    echo "${RED}numlock.sh not found at $NUMLOCK_SCRIPT${RC}"
-    exit 1
-fi
+    
+    YAY_SCRIPT="$GITPATH/yay_setup.sh"
+    if [ -f "$YAY_SCRIPT" ]; then
+        chmod +x "$YAY_SCRIPT"
+        echo "${YELLOW}Running yay_setup.sh...${RC}"
+        "$YAY_SCRIPT"
+        if [ $? -eq 0 ]; then
+            echo "${GREEN}yay_setup.sh executed successfully${RC}"
+        else
+            echo "${RED}yay_setup.sh execution failed${RC}"
+            exit 1
+        fi
+    else
+        echo "${RED}yay_setup.sh not found at $YAY_SCRIPT${RC}"
+        exit 1
+    fi
+}
 
 checkEnv
 installDepend
@@ -317,12 +334,11 @@ installZoxide
 install_additional_dependencies
 create_fastfetch_config
 copyScripts
+imp_scripts
 
-echo "${YELLOW}yay-setup.sh${RC}"
-curl -sSL https://raw.githubusercontent.com/dhruvmistry2000/mybash/main/yay_setup.sh | bash
+# echo "${YELLOW}yay-setup.sh${RC}"
+# curl -sSL https://raw.githubusercontent.com/dhruvmistry2000/mybash/main/yay_setup.sh | bash
 
-# echo "${YELLOW}numlock.sh${RC}"
-# curl -sSL https://raw.githubusercontent.com/dhruvmistry2000/mybash/main/numlock.sh | bash
 
 if linkConfig; then
     echo "${GREEN}Done! Restart your shell to see the changes.${RC}"
