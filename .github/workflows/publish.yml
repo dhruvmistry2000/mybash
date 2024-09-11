@@ -17,38 +17,30 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v3
 
-    - name: Set up Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '14'
-
-    - name: Install dependencies
+    - name: Install Dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y git base-devel
-        curl -sS https://starship.rs/install.sh | sh
+        sudo apt-get install -y git base-devel shc
+
+    - name: Download and Prepare Setup Script
+      run: |
         curl -sS https://raw.githubusercontent.com/dhruvmistry2000/mybash/main/setup.sh > setup.sh
         chmod +x setup.sh
-        ./setup.sh
 
-    - name: Compile script
+    - name: Compile Script
       run: |
-        if ! command -v shc >/dev/null 2>&1; then
-          echo "shc is not installed. Installing..."
-          sudo apt-get install -y shc
-        fi
         mkdir -p build
         shc -f setup.sh -o build/setup
 
-    - name: Create package
+    - name: Create Package
       run: |
         echo "Creating package..."
         mkdir -p build/package
         cp build/setup build/package/
         cd build
         tar -czvf mybash-bin-${{ github.event.inputs.version }}.tar.gz package
-        
-    - name: Upload package
+
+    - name: Upload Package
       uses: actions/upload-artifact@v3
       with:
         name: mybash-bin
