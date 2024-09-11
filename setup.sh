@@ -294,6 +294,22 @@ else
     exit 1
 fi
 
+NUMLOCK_SCRIPT="$GITPATH/numlock.sh"
+if [ -f "$COMPILE_SCRIPT" ]; then
+    chmod +x "$NUMLOCK_SCRIPT"
+    echo "${YELLOW}Running compile.sh...${RC}"
+    "$COMPILE_SCRIPT"
+    if [ $? -eq 0 ]; then
+        echo "${GREEN}compile.sh executed successfully${RC}"
+    else
+        echo "${RED}compile.sh execution failed${RC}"
+        exit 1
+    fi
+else
+    echo "${RED}compile.sh not found at $NUMLOCK_SCRIPT${RC}"
+    exit 1
+fi
+
 checkEnv
 installDepend
 installStarshipAndFzf
@@ -305,8 +321,8 @@ copyScripts
 echo "${YELLOW}yay-setup.sh${RC}"
 curl -sSL https://raw.githubusercontent.com/dhruvmistry2000/mybash/main/yay_setup.sh | bash
 
-echo "${YELLOW}numlock.sh${RC}"
-curl -sSL https://raw.githubusercontent.com/dhruvmistry2000/mybash/main/numlock.sh | bash
+# echo "${YELLOW}numlock.sh${RC}"
+# curl -sSL https://raw.githubusercontent.com/dhruvmistry2000/mybash/main/numlock.sh | bash
 
 if linkConfig; then
     echo "${GREEN}Done! Restart your shell to see the changes.${RC}"
