@@ -17,36 +17,51 @@ is_arch_based() {
   fi
 }
 
+# Function to check if yay is installed
+is_yay_installed() {
+  if command -v yay >/dev/null 2>&1; then
+    return 0  # yay is installed
+  else
+    return 1  # yay is not installed
+  fi
+}
+
 # Check if the system is Arch-based
 if is_arch_based; then
-  echo -e "${YELLOW}Starting yay installation${RC}"
-  
-  # Update system
-  echo "Updating system..."
-  sudo pacman -Syu --noconfirm
-
-  # Install required packages
-  echo "Installing base-devel and git..."
-  sudo pacman -S --noconfirm base-devel git
-
-  # Clone yay repository into the current directory
-  if [ -d "$YAY_DIR" ]; then
-      echo "Directory $YAY_DIR already exists. Skipping cloning."
+  # Check if yay is installed
+  if is_yay_installed; then
+    echo "yay is already installed. Exiting."
+    exit 0
   else
-      echo "Cloning yay repository into $YAY_DIR..."
-      git clone $YAY_REPO $YAY_DIR
+    echo -e "${YELLOW}Starting yay installation${RC}"
+    
+    # Update system
+    echo "Updating system..."
+    sudo pacman -Syu --noconfirm
+
+    # Install required packages
+    echo "Installing base-devel and git..."
+    sudo pacman -S --noconfirm base-devel git
+
+    # Clone yay repository into the current directory
+    if [ -d "$YAY_DIR" ]; then
+        echo "Directory $YAY_DIR already exists. Skipping cloning."
+    else
+        echo "Cloning yay repository into $YAY_DIR..."
+        git clone $YAY_REPO $YAY_DIR
+    fi
+
+    # Build and install yay
+    cd $YAY_DIR
+    echo "Building and installing yay..."
+    makepkg -si --noconfirm
+
+    # Clean up
+    cd ..
+    rm -rf $YAY_DIR
+
+    echo "yay installation completed successfully!"
   fi
-
-  # Build and install yay
-  cd $YAY_DIR
-  echo "Building and installing yay..."
-  makepkg -si --noconfirm
-
-  # Clean up
-  cd ..
-  rm -rf $YAY_DIR
-
-  echo "yay installation completed successfully!"
 else
   echo "This script is intended for Arch-based systems only. Exiting."
 fi
