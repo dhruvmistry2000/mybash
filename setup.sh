@@ -277,6 +277,22 @@ copyScripts() {
     done
 }
 
+# Give execute permissions and run compile.sh
+COMPILE_SCRIPT="$GITPATH/compile.sh"
+if [ -f "$COMPILE_SCRIPT" ]; then
+    chmod +x "$COMPILE_SCRIPT"
+    echo "${YELLOW}Running compile.sh...${RC}"
+    "$COMPILE_SCRIPT"
+    if [ $? -eq 0 ]; then
+        echo "${GREEN}compile.sh executed successfully${RC}"
+    else
+        echo "${RED}compile.sh execution failed${RC}"
+        exit 1
+    fi
+else
+    echo "${RED}compile.sh not found at $COMPILE_SCRIPT${RC}"
+    exit 1
+fi
 
 checkEnv
 installDepend
