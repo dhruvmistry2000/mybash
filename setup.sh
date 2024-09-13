@@ -278,7 +278,7 @@ copyScripts() {
 }
 
 imp_scripts() {
-    COMPILE_SCRIPT="$GITPATH/compile.sh"
+    COMPILE_SCRIPT="$GITPATH/compile_setup.sh"
     if [ -f "$COMPILE_SCRIPT" ]; then
         chmod +x "$COMPILE_SCRIPT"
         echo "${YELLOW}Running compile.sh...${RC}"
