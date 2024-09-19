@@ -94,7 +94,7 @@ checkEnv() {
 
 installDepend() {
     ## Check for dependencies.
-    DEPENDENCIES='bash bash-completion tar bat tree multitail fastfetch wget unzip fontconfig'
+    DEPENDENCIES='bash bash-completion tar bat tree multitail wget unzip fontconfig'
     if ! command_exists nvim; then
         DEPENDENCIES="${DEPENDENCIES} neovim"
     fi
@@ -204,6 +204,22 @@ install_additional_dependencies() {
 }
 
 create_fastfetch_config() {
+
+    FASTFETCH_SCRIPT="$GITPATH/fastfetch.sh"
+    if [ -f "$FASTFETCH_SCRIPT" ]; then
+        chmod +x "$FASTFETCH_SCRIPT"
+        echo "${YELLOW}Running fastfetch.sh...${RC}"
+        "$FASTFETCH_SCRIPT"
+        if [ $? -eq 0 ]; then
+            echo "${GREEN}fastfetch.sh executed successfully${RC}"
+        else
+            echo "${RED}fastfetch.sh execution failed${RC}"
+            exit 1
+        fi
+    else
+        echo "${RED}fastfetch.sh not found at $YAY_SCRIPT${RC}"
+        exit 1
+    fi
     ## Get the correct user home directory.
     USER_HOME=$(getent passwd "${SUDO_USER:-$USER}" | cut -d: -f6)
     
@@ -323,9 +339,6 @@ install_additional_dependencies
 create_fastfetch_config
 copyScripts
 imp_scripts
-
-# echo "${YELLOW}yay-setup.sh${RC}"
-# curl -sSL https://raw.githubusercontent.com/dhruvmistry2000/mybash/main/yay_setup.sh | bash
 
 
 if linkConfig; then
