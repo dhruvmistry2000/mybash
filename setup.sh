@@ -44,7 +44,7 @@ checkEnv() {
     done
 
     ## Check Package Handler
-    PACKAGEMANAGER='nala apt dnf yum pacman zypper emerge xbps-install nix-env'
+    PACKAGEMANAGER='apt dnf pacman'
     for pgm in $PACKAGEMANAGER; do
         if command_exists "$pgm"; then
             PACKAGER="$pgm"
@@ -118,18 +118,10 @@ installDepend() {
             exit 1
         fi
         ${AUR_HELPER} --noconfirm -S ${DEPENDENCIES}
-    elif [ "$PACKAGER" = "nala" ]; then
-        ${SUDO_CMD} ${PACKAGER} install -y ${DEPENDENCIES}
-    elif [ "$PACKAGER" = "emerge" ]; then
-        ${SUDO_CMD} ${PACKAGER} -v app-shells/bash app-shells/bash-completion app-arch/tar app-editors/neovim sys-apps/bat app-text/tree app-text/multitail app-misc/fastfetch
-    elif [ "$PACKAGER" = "xbps-install" ]; then
-        ${SUDO_CMD} ${PACKAGER} -v ${DEPENDENCIES}
-    elif [ "$PACKAGER" = "nix-env" ]; then
-        ${SUDO_CMD} ${PACKAGER} -iA nixos.bash nixos.bash-completion nixos.gnutar nixos.neovim nixos.bat nixos.tree nixos.multitail nixos.fastfetch  nixos.pkgs.starship
     elif [[ "$PACKAGER" == "dnf" ]]; then
         ${SUDO_CMD} ${PACKAGER} install -y ${DEPENDENCIES}
     else
-        ${SUDO_CMD} ${PACKAGER} install -yq ${DEPENDENCIES}
+        ${SUDO_CMD} ${PACKAGER} install -y ${DEPENDENCIES}
     fi
 
     # Check to see if the FiraCode Nerd Font is installed (Change this to whatever font you would like)
@@ -195,10 +187,6 @@ install_additional_dependencies() {
                 ${SUDO_CMD} mv squashfs-root /opt/neovim
                 ${SUDO_CMD} ln -s /opt/neovim/AppRun /usr/bin/nvim
             fi
-            ;;
-        *zypper)
-            ${SUDO_CMD} zypper refresh
-            ${SUDO_CMD} zypper -n install neovim # -y doesn't work on opensuse -n is short for -non-interactive which is equivalent to -y
             ;;
         *dnf)
             ${SUDO_CMD} dnf check-update
@@ -345,4 +333,3 @@ if linkConfig; then
 else
     echo "${RED}Something went wrong!${RC}"
 fi
-
