@@ -2,7 +2,9 @@
 
 # Define color variables for output
 YELLOW='\033[1;33m'
-RC='\033[0m'
+GREEN='\033[1;32m'
+RED='\033[1;31m'
+RC='\033[0m'  # Reset color
 
 # Define the directory name for yay
 YAY_DIR="yay"
@@ -17,36 +19,51 @@ is_arch_based() {
   fi
 }
 
+# Function to check if yay is installed
+is_yay_installed() {
+  if command -v yay >/dev/null 2>&1; then
+    return 0  # yay is installed
+  else
+    return 1  # yay is not installed
+  fi
+}
+
 # Check if the system is Arch-based
 if is_arch_based; then
-  echo -e "${YELLOW}Starting yay installation${RC}"
-  
-  # Update system
-  echo "Updating system..."
-  sudo pacman -Syu --noconfirm
-
-  # Install required packages
-  echo "Installing base-devel and git..."
-  sudo pacman -S --noconfirm base-devel git
-
-  # Clone yay repository into the current directory
-  if [ -d "$YAY_DIR" ]; then
-      echo "Directory $YAY_DIR already exists. Skipping cloning."
+  # Check if yay is installed
+  if is_yay_installed; then
+    echo -e "${GREEN}yay is already installed. Exiting.${RC}"
+    exit 0
   else
-      echo "Cloning yay repository into $YAY_DIR..."
-      git clone $YAY_REPO $YAY_DIR
+    echo -e "${YELLOW}Starting yay installation${RC}"
+    
+    # Update system
+    echo "Updating system..."
+    sudo pacman -Syu --noconfirm
+
+    # Install required packages
+    echo "Installing base-devel and git..."
+    sudo pacman -S --noconfirm base-devel git
+
+    # Clone yay repository into the current directory
+    if [ -d "$YAY_DIR" ]; then
+        echo "Directory $YAY_DIR already exists. Skipping cloning."
+    else
+        echo "Cloning yay repository into $YAY_DIR..."
+        git clone $YAY_REPO $YAY_DIR
+    fi
+
+    # Build and install yay
+    cd $YAY_DIR
+    echo "Building and installing yay..."
+    makepkg -si --noconfirm
+
+    # Clean up
+    cd ..
+    rm -rf $YAY_DIR
+
+    echo -e "${GREEN}yay installation completed successfully!${RC}"
   fi
-
-  # Build and install yay
-  cd $YAY_DIR
-  echo "Building and installing yay..."
-  makepkg -si --noconfirm
-
-  # Clean up
-  cd ..
-  rm -rf $YAY_DIR
-
-  echo "yay installation completed successfully!"
 else
-  echo "This script is intended for Arch-based systems only. Exiting."
+  echo -e "${RED}This script is intended for Arch-based systems only. Exiting.${RC}"
 fi

@@ -44,7 +44,7 @@ checkEnv() {
     done
 
     ## Check Package Handler
-    PACKAGEMANAGER='nala apt dnf yum pacman zypper emerge xbps-install nix-env'
+    PACKAGEMANAGER='apt dnf pacman'
     for pgm in $PACKAGEMANAGER; do
         if command_exists "$pgm"; then
             PACKAGER="$pgm"
@@ -118,18 +118,10 @@ installDepend() {
             exit 1
         fi
         ${AUR_HELPER} --noconfirm -S ${DEPENDENCIES}
-    elif [ "$PACKAGER" = "nala" ]; then
-        ${SUDO_CMD} ${PACKAGER} install -y ${DEPENDENCIES}
-    elif [ "$PACKAGER" = "emerge" ]; then
-        ${SUDO_CMD} ${PACKAGER} -v app-shells/bash app-shells/bash-completion app-arch/tar app-editors/neovim sys-apps/bat app-text/tree app-text/multitail app-misc/fastfetch
-    elif [ "$PACKAGER" = "xbps-install" ]; then
-        ${SUDO_CMD} ${PACKAGER} -v ${DEPENDENCIES}
-    elif [ "$PACKAGER" = "nix-env" ]; then
-        ${SUDO_CMD} ${PACKAGER} -iA nixos.bash nixos.bash-completion nixos.gnutar nixos.neovim nixos.bat nixos.tree nixos.multitail nixos.fastfetch  nixos.pkgs.starship
     elif [[ "$PACKAGER" == "dnf" ]]; then
         ${SUDO_CMD} ${PACKAGER} install -y ${DEPENDENCIES}
     else
-        ${SUDO_CMD} ${PACKAGER} install -yq ${DEPENDENCIES}
+        ${SUDO_CMD} ${PACKAGER} install -y ${DEPENDENCIES}
     fi
 
     # Check to see if the FiraCode Nerd Font is installed (Change this to whatever font you would like)
@@ -195,10 +187,6 @@ install_additional_dependencies() {
                 ${SUDO_CMD} mv squashfs-root /opt/neovim
                 ${SUDO_CMD} ln -s /opt/neovim/AppRun /usr/bin/nvim
             fi
-            ;;
-        *zypper)
-            ${SUDO_CMD} zypper refresh
-            ${SUDO_CMD} zypper -n install neovim # -y doesn't work on opensuse -n is short for -non-interactive which is equivalent to -y
             ;;
         *dnf)
             ${SUDO_CMD} dnf check-update
@@ -277,6 +265,55 @@ copyScripts() {
     done
 }
 
+imp_scripts() {
+    COMPILE_SCRIPT="$GITPATH/compile_setup.sh"
+    if [ -f "$COMPILE_SCRIPT" ]; then
+        chmod +x "$COMPILE_SCRIPT"
+        echo "${YELLOW}Running compile.sh...${RC}"
+        "$COMPILE_SCRIPT"
+        if [ $? -eq 0 ]; then
+            echo "${GREEN}compile.sh executed successfully${RC}"
+        else
+            echo "${RED}compile.sh execution failed${RC}"
+            exit 1
+        fi
+    else
+        echo "${RED}compile.sh not found at $COMPILE_SCRIPT${RC}"
+        exit 1
+    fi
+    
+    NUMLOCK_SCRIPT="$GITPATH/numlock.sh"
+    if [ -f "$NUMLOCK_SCRIPT" ]; then
+        chmod +x "$NUMLOCK_SCRIPT"
+        echo "${YELLOW}Running numlock.sh...${RC}"
+        "$NUMLOCK_SCRIPT"
+        if [ $? -eq 0 ]; then
+            echo "${GREEN}numlock.sh executed successfully${RC}"
+        else
+            echo "${RED}numlock.sh execution failed${RC}"
+            exit 1
+        fi
+    else
+        echo "${RED}numlock.sh not found at $NUMLOCK_SCRIPT${RC}"
+        exit 1
+    fi
+    
+    YAY_SCRIPT="$GITPATH/yay_setup.sh"
+    if [ -f "$YAY_SCRIPT" ]; then
+        chmod +x "$YAY_SCRIPT"
+        echo "${YELLOW}Running yay_setup.sh...${RC}"
+        "$YAY_SCRIPT"
+        if [ $? -eq 0 ]; then
+            echo "${GREEN}yay_setup.sh executed successfully${RC}"
+        else
+            echo "${RED}yay_setup.sh execution failed${RC}"
+            exit 1
+        fi
+    else
+        echo "${RED}yay_setup.sh not found at $YAY_SCRIPT${RC}"
+        exit 1
+    fi
+}
 
 checkEnv
 installDepend
@@ -285,16 +322,14 @@ installZoxide
 install_additional_dependencies
 create_fastfetch_config
 copyScripts
+imp_scripts
 
-echo "${YELLOW}yay-setup.sh${RC}"
-curl -sSL https://raw.githubusercontent.com/dhruvmistry2000/mybash/main/yay_setup.sh | bash
+# echo "${YELLOW}yay-setup.sh${RC}"
+# curl -sSL https://raw.githubusercontent.com/dhruvmistry2000/mybash/main/yay_setup.sh | bash
 
-echo "${YELLOW}numlock.sh${RC}"
-curl -sSL https://raw.githubusercontent.com/dhruvmistry2000/mybash/main/numlock.sh | bash
 
 if linkConfig; then
     echo "${GREEN}Done! Restart your shell to see the changes.${RC}"
 else
     echo "${RED}Something went wrong!${RC}"
 fi
-
