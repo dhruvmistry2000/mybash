@@ -331,6 +331,55 @@ imp_scripts() {
     fi
 }
 
+installRustAndBottom() {
+    # Check if Rust is installed
+    if command_exists rustc; then
+        echo "Rust is already installed."
+        return
+    fi
+
+    echo "${YELLOW}Installing Rust...${RC}"
+    curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain stable -y
+
+    # Source the Rust environment
+    source "$HOME/.cargo/env"
+
+    # Clone the bottom repository
+    echo "${YELLOW}Cloning bottom repository...${RC}"
+    BOTTOM_DIR="$GITPATH/bottom"
+    if [ ! -d "$BOTTOM_DIR" ]; then
+        git clone https://github.com/ClementTsang/bottom.git "$BOTTOM_DIR"
+    else
+        echo "Bottom repository already exists at $BOTTOM_DIR"
+    fi
+
+    # Build the bottom project
+    echo "${YELLOW}Building bottom...${RC}"
+    cd "$BOTTOM_DIR" && cargo build --release
+    if [ $? -eq 0 ]; then
+        echo "${GREEN}Bottom built successfully!${RC}"
+    else
+        echo "${RED}Failed to build bottom!${RC}"
+        exit 1
+    fi
+
+    # Cleanup: Remove the bottom directory
+    echo "${YELLOW}Cleaning up by removing the bottom directory...${RC}"
+    cd "$GITPATH"  # Navigate back to the original directory
+    rm -rf "$BOTTOM_DIR"
+    echo "${GREEN}Bottom directory removed successfully.${RC}"
+
+    # Ask the user if they want to keep Rust
+    read -p "Do you want to keep Rust installed? (y/n): " keep_rust
+    if [[ "$keep_rust" =~ ^[Nn]$ ]]; then
+        echo "${YELLOW}Removing Rust...${RC}"
+        ${SUDO_CMD} rustup self uninstall -y
+        echo "${GREEN}Rust has been removed.${RC}"
+    else
+        echo "${GREEN}Rust will be kept.${RC}"
+    fi
+}
+
 checkEnv
 installDepend
 installStarshipAndFzf
@@ -339,7 +388,7 @@ install_additional_dependencies
 create_fastfetch_config
 copyScripts
 imp_scripts
-
+installRustAndBottom
 
 if linkConfig; then
     echo "${GREEN}Done! Restart your shell to see the changes.${RC}"
