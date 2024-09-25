@@ -12,7 +12,7 @@ command_exists() {
 installRustAndBottom() {
     # Check if Rust is installed
     if command_exists rustc; then
-        echo "Rust is already installed."
+        echo "${GREEN}Rust is already installed.${RC}"
         return
     fi
 
@@ -20,7 +20,12 @@ installRustAndBottom() {
     curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh -s -- --default-toolchain stable -y
 
     # Source the Rust environment
-    source "$HOME/.cargo/env"
+    if [ -f "$HOME/.cargo/env" ]; then
+        source "$HOME/.cargo/env"
+    else
+        echo "${RED}Failed to source Rust environment. Please ensure Rust is installed correctly.${RC}"
+        exit 1
+    fi
 
     # Clone the bottom repository
     echo "${YELLOW}Cloning bottom repository...${RC}"
@@ -33,7 +38,8 @@ installRustAndBottom() {
 
     # Build the bottom project
     echo "${YELLOW}Building bottom...${RC}"
-    cd "$BOTTOM_DIR" && cargo build --release
+    cd "$BOTTOM_DIR" || { echo "${RED}Failed to enter directory $BOTTOM_DIR.${RC}"; exit 1; }
+    cargo build --release
     if [ $? -eq 0 ]; then
         echo "${GREEN}Bottom built successfully!${RC}"
     else
@@ -43,7 +49,7 @@ installRustAndBottom() {
 
     # Cleanup: Remove the bottom directory
     echo "${YELLOW}Cleaning up by removing the bottom directory...${RC}"
-    cd ~  # Navigate back to the home directory
+    cd ~ || exit 1  # Navigate back to the home directory
     rm -rf "$BOTTOM_DIR"
     echo "${GREEN}Bottom directory removed successfully.${RC}"
 
@@ -58,4 +64,5 @@ installRustAndBottom() {
     fi
 }
 
+# Call the function
 installRustAndBottom
