@@ -47,15 +47,15 @@ if is_arch_based; then
 
     # Clone yay repository into the current directory
     if [ -d "$YAY_DIR" ]; then
-        echo "Directory $YAY_DIR already exists. Skipping cloning."
+        echo -e "${YELLOW}Directory $YAY_DIR already exists. Skipping cloning.${RC}"
     else
-        echo "Cloning yay repository into $YAY_DIR..."
+        echo -e "${YELLOW}Cloning yay repository into $YAY_DIR...${RC}"
         git clone $YAY_REPO $YAY_DIR
     fi
 
     # Build and install yay
     cd $YAY_DIR
-    echo "Building and installing yay..."
+    echo -e "${YELLOW}Building and installing yay...${RC}"
     makepkg -si --noconfirm
 
     # Clean up

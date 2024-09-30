@@ -60,5 +60,4 @@ main() {
   echo "${GREEN}Numlock service will be enabled on boot.${RC}"
 }
 
-echo "dhruv"
 main
