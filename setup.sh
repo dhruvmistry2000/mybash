@@ -125,7 +125,7 @@ installDepend() {
             exit 1
         fi
         ${AUR_HELPER} --noconfirm -S ${DEPENDENCIES}
-    elif [[ "$PACKAGER" == "dnf" ]]; then
+    elif [ "$PACKAGER" = "dnf" ]; then
         ${SUDO_CMD} ${PACKAGER} install -y ${DEPENDENCIES}
     else
         ${SUDO_CMD} ${PACKAGER} install -y ${DEPENDENCIES}
