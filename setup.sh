@@ -11,22 +11,22 @@ REPO_URL="https://github.com/dhruvmistry2000/mybash"
 
 # Check if the repository directory exists, create it if it doesn't
 if [ -d "$REPO_DIR" ]; then
-    echo -e "${YELLOW}Pulling mybash repository at: $REPO_DIR${RC}"
+    printf "${YELLOW}Pulling mybash repository at: $REPO_DIR${RC}\n"
     cd "$REPO_DIR"
     git pull
     if [ $? -eq 0 ]; then
-        echo -e "${GREEN}Successfully pulled mybash repository${RC}"
+        printf "${GREEN}Successfully pulled mybash repository${RC}\n"
     else
-        echo -e "${RED}Failed to pull mybash repository${RC}"
+        printf "${RED}Failed to pull mybash repository${RC}\n"
         exit 1
     fi
 else
-    echo -e "${YELLOW}Cloning mybash repository into: $REPO_DIR${RC}"
+    printf "${YELLOW}Cloning mybash repository into: $REPO_DIR${RC}\n"
     git clone "$REPO_URL" "$REPO_DIR"
     if [ $? -eq 0 ]; then
-        echo -e "${GREEN}Successfully cloned mybash repository${RC}"
+        printf "${GREEN}Successfully cloned mybash repository${RC}\n"
     else
-        echo -e "${RED}Failed to clone mybash repository${RC}"
+        printf "${RED}Failed to clone mybash repository${RC}\n"
         exit 1
     fi
 fi
@@ -45,7 +45,7 @@ checkEnv() {
     REQUIREMENTS='curl groups sudo'
     for req in $REQUIREMENTS; do
         if ! command_exists "$req"; then
-            echo -e "${RED}To run me, you need: $REQUIREMENTS${RC}"
+            printf "${RED}To run me, you need: $REQUIREMENTS${RC}\n"
             exit 1
         fi
     done
@@ -55,13 +55,13 @@ checkEnv() {
     for pgm in $PACKAGEMANAGER; do
         if command_exists "$pgm"; then
             PACKAGER="$pgm"
-            echo -e "Using $pgm"
+            printf "Using $pgm\n"
             break
         fi
     done
 
     if [ -z "$PACKAGER" ]; then
-        echo -e "${RED}Can't find a supported package manager${RC}"
+        printf "${RED}Can't find a supported package manager${RC}\n"
         exit 1
     fi
 
@@ -73,12 +73,12 @@ checkEnv() {
         SUDO_CMD="su -c"
     fi
 
-    echo -e "Using $SUDO_CMD as privilege escalation software"
+    printf "Using $SUDO_CMD as privilege escalation software\n"
 
     ## Check if the current directory is writable.
     GITPATH=$(dirname "$(realpath "$0")")
     if [ ! -w "$GITPATH" ]; then
-        echo -e "${RED}Can't write to $GITPATH${RC}"
+        printf "${RED}Can't write to $GITPATH${RC}\n"
         exit 1
     fi
 
@@ -87,14 +87,14 @@ checkEnv() {
     for sug in $SUPERUSERGROUP; do
         if groups | grep -q "$sug"; then
             SUGROUP="$sug"
-            echo -e "Super user group $SUGROUP"
+            printf "Super user group $SUGROUP\n"
             break
         fi
     done
 
     ## Check if member of the sudo group.
     if ! groups | grep -q "$SUGROUP"; then
-        echo -e "${RED}You need to be a member of the sudo group to run me!${RC}"
+        printf "${RED}You need to be a member of the sudo group to run me!${RC}\n"
         exit 1
     fi
 }
@@ -106,22 +106,22 @@ installDepend() {
         DEPENDENCIES="${DEPENDENCIES} neovim"
     fi
 
-    echo -e "${YELLOW}Installing dependencies...${RC}"
+    printf "${YELLOW}Installing dependencies...${RC}\n"
     if [ "$PACKAGER" = "pacman" ]; then
         if ! command_exists yay && ! command_exists paru; then
-            echo "Installing yay as AUR helper..."
+            printf "Installing yay as AUR helper...\n"
             ${SUDO_CMD} ${PACKAGER} --noconfirm -S base-devel
             cd /opt && ${SUDO_CMD} git clone https://aur.archlinux.org/yay-git.git && ${SUDO_CMD} chown -R "${USER}:${USER}" ./yay-git
             cd yay-git && makepkg --noconfirm -si
         else
-            echo "AUR helper already installed"
+            printf "AUR helper already installed\n"
         fi
         if command_exists yay; then
             AUR_HELPER="yay"
         elif command_exists paru; then
             AUR_HELPER="paru"
         else
-            echo "No AUR helper found. Please install yay or paru."
+            printf "No AUR helper found. Please install yay or paru.\n"
             exit 1
         fi
         ${AUR_HELPER} --noconfirm -S ${DEPENDENCIES}
@@ -134,9 +134,9 @@ installDepend() {
     # Check to see if the FiraCode Nerd Font is installed (Change this to whatever font you would like)
     FONT_NAME="Hack"
     if fc-list :family | grep -iq "$FONT_NAME"; then
-        echo "Font '$FONT_NAME' is installed."
+        printf "Font '$FONT_NAME' is installed.\n"
     else
-        echo "Installing font '$FONT_NAME'"
+        printf "Installing font '$FONT_NAME'\n"
         # Change this URL to correspond with the correct font
         FONT_URL="https://github.com/ryanoasis/nerd-fonts/releases/download/v2.3.3/Hack.zip"
         FONT_DIR="$HOME/.local/share/fonts"
@@ -148,22 +148,22 @@ installDepend() {
         fc-cache -fv
         # delete the files created from this
         rm -rf ${FONT_NAME} ${FONT_NAME}.zip
-        echo "'$FONT_NAME' installed successfully."
+        printf "'$FONT_NAME' installed successfully.\n"
     fi
 }
 
 installStarshipAndFzf() {
     if command_exists starship; then
-        echo "Starship already installed"
+        printf "Starship already installed\n"
         return
     fi
 
     if ! curl -sS https://starship.rs/install.sh | sh; then
-        echo -e "${RED}Something went wrong during starship install!${RC}"
+        printf "${RED}Something went wrong during starship install!${RC}\n"
         exit 1
     fi
     if command_exists fzf; then
-        echo "Fzf already installed"
+        printf "Fzf already installed\n"
     else
         git clone --depth 1 https://github.com/junegunn/fzf.git ~/.fzf
         ~/.fzf/install
@@ -172,12 +172,12 @@ installStarshipAndFzf() {
 
 installZoxide() {
     if command_exists zoxide; then
-        echo "Zoxide already installed"
+        printf "Zoxide already installed\n"
         return
     fi
 
     if ! curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh; then
-        echo -e "${RED}Something went wrong during zoxide install!${RC}"
+        printf "${RED}Something went wrong during zoxide install!${RC}\n"
         exit 1
     fi
 }
@@ -204,7 +204,7 @@ install_additional_dependencies() {
             ${SUDO_CMD} pacman -S --noconfirm neovim
             ;;
         *)
-            echo "No supported package manager found. Please install neovim manually."
+            printf "No supported package manager found. Please install neovim manually.\n"
             exit 1
             ;;
     esac
@@ -215,16 +215,16 @@ create_fastfetch_config() {
     FASTFETCH_SCRIPT="$GITPATH/fastfetch.sh"
     if [ -f "$FASTFETCH_SCRIPT" ]; then
         chmod +x "$FASTFETCH_SCRIPT"
-        echo -e "${YELLOW}Running fastfetch.sh...${RC}"
+        printf "${YELLOW}Running fastfetch.sh...${RC}\n"
         "$FASTFETCH_SCRIPT"
         if [ $? -eq 0 ]; then
-            echo -e "${GREEN}fastfetch.sh executed successfully${RC}"
+            printf "${GREEN}fastfetch.sh executed successfully${RC}\n"
         else
-            echo -e "${RED}fastfetch.sh execution failed${RC}"
+            printf "${RED}fastfetch.sh execution failed${RC}\n"
             exit 1
         fi
     else
-        echo -e "${RED}fastfetch.sh not found at $YAY_SCRIPT${RC}"
+        printf "${RED}fastfetch.sh not found at $YAY_SCRIPT${RC}\n"
         exit 1
     fi
     ## Get the correct user home directory.
@@ -238,7 +238,7 @@ create_fastfetch_config() {
         rm -f "$USER_HOME/.config/fastfetch/config.jsonc"
     fi
     ln -svf "$GITPATH/config.jsonc" "$USER_HOME/.config/fastfetch/config.jsonc" || {
-        echo -e "${RED}Failed to create symbolic link for fastfetch config${RC}"
+        printf "${RED}Failed to create symbolic link for fastfetch config${RC}\n"
         exit 1
     }
 }
@@ -249,20 +249,20 @@ linkConfig() {
     ## Check if a bashrc file is already there.
     OLD_BASHRC="$USER_HOME/.bashrc"
     if [ -e "$OLD_BASHRC" ]; then
-        echo -e "${YELLOW}Moving old bash config file to $USER_HOME/.bashrc.bak${RC}"
+        printf "${YELLOW}Moving old bash config file to $USER_HOME/.bashrc.bak${RC}\n"
         if ! mv "$OLD_BASHRC" "$USER_HOME/.bashrc.bak"; then
-            echo -e "${RED}Can't move the old bash config file!${RC}"
+            printf "${RED}Can't move the old bash config file!${RC}\n"
             exit 1
         fi
     fi
 
-    echo -e "${YELLOW}Linking new bash config file...${RC}"
+    printf "${YELLOW}Linking new bash config file...${RC}\n"
     ln -svf "$GITPATH/.bashrc" "$USER_HOME/.bashrc" || {
-        echo -e "${RED}Failed to create symbolic link for .bashrc${RC}"
+        printf "${RED}Failed to create symbolic link for .bashrc${RC}\n"
         exit 1
     }
     ln -svf "$GITPATH/starship.toml" "$USER_HOME/.config/starship.toml" || {
-        echo -e "${RED}Failed to create symbolic link for starship.toml${RC}"
+        printf "${RED}Failed to create symbolic link for starship.toml${RC}\n"
         exit 1
     }
 }
@@ -283,7 +283,7 @@ copyScripts() {
             cp "$script" "$SCRIPTS_DEST_DIR/"
             # Make the file executable
             chmod +x "$SCRIPTS_DEST_DIR/$(basename "$script")"
-            echo -e "Copied and set execution permission for $(basename "$script")"
+            printf "Copied and set execution permission for $(basename "$script")\n"
         fi
     done
 }
@@ -292,48 +292,48 @@ imp_scripts() {
     COMPILE_SCRIPT="$GITPATH/compile_setup.sh"
     if [ -f "$COMPILE_SCRIPT" ]; then
         chmod +x "$COMPILE_SCRIPT"
-        echo -e "${YELLOW}Running compile.sh...${RC}"
+        printf "${YELLOW}Running compile.sh...${RC}\n"
         "$COMPILE_SCRIPT"
         if [ $? -eq 0 ]; then
-            echo -e "${GREEN}compile.sh executed successfully${RC}"
+            printf "${GREEN}compile.sh executed successfully${RC}\n"
         else
-            echo -e "${RED}compile.sh execution failed${RC}"
+            printf "${RED}compile.sh execution failed${RC}\n"
             exit 1
         fi
     else
-        echo -e "${RED}compile.sh not found at $COMPILE_SCRIPT${RC}"
+        printf"${RED}compile.sh not found at $COMPILE_SCRIPT${RC}\n"
         exit 1
     fi
     
     NUMLOCK_SCRIPT="$GITPATH/numlock.sh"
     if [ -f "$NUMLOCK_SCRIPT" ]; then
         chmod +x "$NUMLOCK_SCRIPT"
-        echo -e "${YELLOW}Running numlock.sh...${RC}"
+        printf "${YELLOW}Running numlock.sh...${RC}\n"
         "$NUMLOCK_SCRIPT"
         if [ $? -eq 0 ]; then
-            echo -e "${GREEN}numlock.sh executed successfully${RC}"
+            printf "${GREEN}numlock.sh executed successfully${RC}\n"
         else
-            echo -e "${RED}numlock.sh execution failed${RC}"
+            printf "${RED}numlock.sh execution failed${RC}\n"
             exit 1
         fi
     else
-        echo -e "${RED}numlock.sh not found at $NUMLOCK_SCRIPT${RC}"
+        printf"${RED}numlock.sh not found at $NUMLOCK_SCRIPT${RC}\n"
         exit 1
     fi
     
     YAY_SCRIPT="$GITPATH/yay_setup.sh"
     if [ -f "$YAY_SCRIPT" ]; then
         chmod +x "$YAY_SCRIPT"
-        echo -e "${YELLOW}Running yay_setup.sh...${RC}"
+        printf "${YELLOW}Running yay_setup.sh...${RC}\n"
         "$YAY_SCRIPT"
         if [ $? -eq 0 ]; then
-            echo -e "${GREEN}yay_setup.sh executed successfully${RC}"
+            printf "${GREEN}yay_setup.sh executed successfully${RC}\n"
         else
-            echo -e "${RED}yay_setup.sh execution failed${RC}"
+            printf "${RED}yay_setup.sh execution failed${RC}\n"
             exit 1
         fi
     else
-        echo -e "${RED}yay_setup.sh not found at $YAY_SCRIPT${RC}"
+        printf"${RED}yay_setup.sh not found at $YAY_SCRIPT${RC}\n"
         exit 1
     fi
 }
@@ -350,7 +350,7 @@ imp_scripts
 
 
 if linkConfig; then
-    echo -e "${GREEN}Done! Restart your shell to see the changes.${RC}"
+    printf "${GREEN}Done! Restart your shell to see the changes.${RC}\n"
 else
-    echo -e "${RED}Something went wrong!${RC}"
+    printf "${RED}Something went wrong!${RC}\n"
 fi
