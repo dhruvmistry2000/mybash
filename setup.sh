@@ -10,7 +10,17 @@ REPO_DIR="$HOME/Github/mybash"
 REPO_URL="https://github.com/dhruvmistry2000/mybash"
 
 # Check if the repository directory exists, create it if it doesn't
-if [ ! -d "$REPO_DIR" ]; then
+if [ -d "$REPO_DIR" ]; then
+    echo -e "${YELLOW}Pulling mybash repository at: $REPO_DIR${RC}"
+    cd "$REPO_DIR"
+    git pull
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}Successfully pulled mybash repository${RC}"
+    else
+        echo -e "${RED}Failed to pull mybash repository${RC}"
+        exit 1
+    fi
+else
     echo -e "${YELLOW}Cloning mybash repository into: $REPO_DIR${RC}"
     git clone "$REPO_URL" "$REPO_DIR"
     if [ $? -eq 0 ]; then
@@ -19,10 +29,7 @@ if [ ! -d "$REPO_DIR" ]; then
         echo -e "${RED}Failed to clone mybash repository${RC}"
         exit 1
     fi
-else
-    echo -e "${GREEN}Repository already exists at: $REPO_DIR${RC}"
 fi
-
 # Define variables for commands and paths
 PACKAGER=""
 SUDO_CMD=""
