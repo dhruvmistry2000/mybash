@@ -2,8 +2,6 @@
 
 [![Bash Lint](https://github.com/dhruvmistry2000/mybash/actions/workflows/main.yml/badge.svg)](https://github.com/dhruvmistry2000/mybash/actions/workflows/main.yml)
 
-[![GitHub Actions](https://github.com/dhruvmistry2000/mybash/actions/workflows/github-actions.yml/badge.svg)](https://github.com/dhruvmistry2000/mybash/actions/workflows/github-actions.yml)
-
 This setup script installs and configures various tools and custom configurations to enhance your bash experience. The script includes:
 
 * Installation of Starship, a customizable shell prompt
