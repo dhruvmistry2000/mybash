@@ -2,7 +2,6 @@
 
 # Define color variables
 RC='\033[0m'        # Reset
-RED='\033[31m'      # Red
 GREEN='\033[32m'    # Green
 YELLOW='\033[33m'   # Yellow
 BLUE='\033[34m'     # Blue

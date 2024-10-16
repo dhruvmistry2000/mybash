@@ -12,16 +12,15 @@ INSTALL_DIR="$HOME/fastfetch"
 
 # Check if the installation directory exists, create it if it doesn't
 if [ ! -d "$INSTALL_DIR" ]; then
-    echo -e "${YELLOW}Cloning fastfetch repository into: $INSTALL_DIR${RC}"
-    git clone "$FASTFETCH_REPO_URL" "$INSTALL_DIR"
-    if [ $? -eq 0 ]; then
-        echo -e "${GREEN}Successfully cloned fastfetch repository${RC}"
+    printf "${YELLOW}Cloning fastfetch repository into: $INSTALL_DIR${RC}\n"
+    if git clone "$FASTFETCH_REPO_URL" "$INSTALL_DIR"; then
+        printf "${GREEN}Successfully cloned fastfetch repository${RC}\n"
     else
-        echo -e "${RED}Failed to clone fastfetch repository${RC}"
+        printf "${RED}Failed to clone fastfetch repository${RC}\n"
         exit 1
     fi
 else
-    echo -e "${GREEN}Repository already exists at: $INSTALL_DIR${RC}"
+    printf "${GREEN}Repository already exists at: $INSTALL_DIR${RC}\n"
 fi
 
 # Navigate to the installation directory
@@ -36,9 +35,9 @@ cd build
 
 # Run cmake and make to compile fastfetch
 cmake ..
-make -j$(nproc)
+make -j"$(nproc)"
 
 # Install fastfetch
 sudo make install
 
-echo -e "${GREEN}fastfetch has been successfully installed${RC}"
+printf "${GREEN}fastfetch has been successfully installed${RC}\n"
