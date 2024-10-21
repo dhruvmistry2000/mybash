@@ -5,6 +5,12 @@ RC='\033[0m'        # Reset
 RED='\033[31m'      # Red
 GREEN='\033[32m'    # Green
 YELLOW='\033[33m'   # Yellow
+CYAN='\033[36m'     # Cyan
+
+# Function to check if a command exists
+command_exists() {
+    command -v "$1" > /dev/null 2>&1
+}
 
 checkEnv() {
     ## Check for requirements.
