@@ -22,8 +22,10 @@ checkEnv() {
     # Check for supported package managers
     if command_exists pacman; then
         PACKAGER="pacman"
-    elif command_exists apt-get || command_exists nala; then
+    elif command_exists apt-get; then
         PACKAGER="apt-get"
+    elif command_exists nala; then
+        PACKAGER="nala"
     elif command_exists dnf; then
         PACKAGER="dnf"
     elif command_exists zypper; then
@@ -79,14 +81,29 @@ installDepend() {
             echo "${BLUE}Installing dependencies using AUR helper...${RC}"
             $AUR_HELPER -S --needed --noconfirm "$DEPENDENCIES"
             ;;
-        apt-get|nala)
+        apt-get)
             COMPILEDEPS='build-essential'
             echo "${BLUE}Updating package lists...${RC}"
             $ESCALATION_TOOL "$PACKAGER" update
             echo "${BLUE}Adding i386 architecture and installing dependencies...${RC}"
             $ESCALATION_TOOL dpkg --add-architecture i386
             $ESCALATION_TOOL "$PACKAGER" update
-            $ESCALATION_TOOL "$PACKAGER" install -y "$DEPENDENCIES" "$COMPILEDEPS"
+            if ! $ESCALATION_TOOL "$PACKAGER" install -y $DEPENDENCIES $COMPILEDEPS; then
+                echo "${RED}Unable to locate packages. Please check your sources list and try again.${RC}"
+                exit 1
+            fi
+            ;;
+        nala)
+            COMPILEDEPS='build-essential'
+            echo "${BLUE}Updating package lists...${RC}"
+            $ESCALATION_TOOL "$PACKAGER" update
+            echo "${BLUE}Adding i386 architecture and installing dependencies...${RC}"
+            $ESCALATION_TOOL dpkg --add-architecture i386
+            $ESCALATION_TOOL "$PACKAGER" update
+            if ! $ESCALATION_TOOL "$PACKAGER" install -y $DEPENDENCIES $COMPILEDEPS; then
+                echo "${RED}Unable to locate packages. Please check your sources list and try again.${RC}"
+                exit 1
+            fi
             ;;
         dnf)
             COMPILEDEPS='@development-tools'
@@ -94,19 +111,19 @@ installDepend() {
             $ESCALATION_TOOL "$PACKAGER" update
             echo "${BLUE}Enabling powertools and installing dependencies...${RC}"
             $ESCALATION_TOOL "$PACKAGER" config-manager --set-enabled powertools
-            $ESCALATION_TOOL "$PACKAGER" install -y "$DEPENDENCIES" "$COMPILEDEPS"
+            $ESCALATION_TOOL "$PACKAGER" install -y $DEPENDENCIES $COMPILEDEPS
             $ESCALATION_TOOL "$PACKAGER" install -y glibc-devel.i686 libgcc.i686
             ;;
         zypper)
             COMPILEDEPS='patterns-devel-base-devel_basis'
             echo "${BLUE}Refreshing repositories and installing dependencies...${RC}"
             $ESCALATION_TOOL "$PACKAGER" refresh
-            $ESCALATION_TOOL "$PACKAGER" --non-interactive install "$DEPENDENCIES" "$COMPILEDEPS"
+            $ESCALATION_TOOL "$PACKAGER" --non-interactive install $DEPENDENCIES $COMPILEDEPS
             $ESCALATION_TOOL "$PACKAGER" --non-interactive install libgcc_s1-gcc7-32bit glibc-devel-32bit
             ;;
         *)
             echo "${BLUE}Installing dependencies using $PACKAGER...${RC}"
-            $ESCALATION_TOOL "$PACKAGER" install -y "$DEPENDENCIES"
+            $ESCALATION_TOOL "$PACKAGER" install -y $DEPENDENCIES
             ;;
     esac
 }
