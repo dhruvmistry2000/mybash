@@ -89,7 +89,6 @@ checkEscalationTool() {
     fi
 }
 
-
 installFastfetch() {
     if ! command_exists fastfetch; then
         printf "%b\n" "${YELLOW}Installing Fastfetch...${RC}"
@@ -97,10 +96,13 @@ installFastfetch() {
             pacman)
                 "$ESCALATION_TOOL" "$PACKAGER" -S --needed --noconfirm fastfetch
                 ;;
-            apt-get|nala)
-                curl -sSLo /tmp/fastfetch.deb https://github.com/fastfetch-cli/fastfetch/releases/latest/download/fastfetch-linux-amd64.deb
-                "$ESCALATION_TOOL" "$PACKAGER" install -y /tmp/fastfetch.deb
-                rm /tmp/fastfetch.deb
+            apt|apt-get)
+                "$ESCALATION_TOOL" "$PACKAGER" update
+                "$ESCALATION_TOOL" "$PACKAGER" install -y wget
+                wget -O fastfetch.deb https://github.com/fastfetch-cli/fastfetch/releases/latest/download/fastfetch-linux-amd64.deb
+                "$ESCALATION_TOOL" dpkg -i fastfetch.deb
+                "$ESCALATION_TOOL" "$PACKAGER" install -f
+                rm fastfetch.deb
                 ;;
             *)
                 "$ESCALATION_TOOL" "$PACKAGER" install -y fastfetch
