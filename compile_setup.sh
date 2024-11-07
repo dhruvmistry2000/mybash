@@ -65,7 +65,7 @@ checkAURHelper() {
 
 # Install dependencies based on the package manager
 installDepend() {
-    DEPENDENCIES='tar tree multitail tldr trash-cli unzip cmake make jq'
+    DEPENDENCIES='tar tree tldr trash-cli unzip cmake make jq'
     echo "${YELLOW}Installing dependencies...${RC}"
 
     case $PACKAGER in
