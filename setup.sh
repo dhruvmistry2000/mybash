@@ -212,7 +212,7 @@ install_additional_dependencies() {
 
 create_fastfetch_config() {
 
-    FASTFETCH_SCRIPT="$GITPATH/fastfetch.sh"
+    FASTFETCH_SCRIPT="$GITPATH/execution_scripts/fastfetch.sh"
     if [ -f "$FASTFETCH_SCRIPT" ]; then
         chmod +x "$FASTFETCH_SCRIPT"
         printf "${YELLOW}Running fastfetch.sh...${RC}\n"
@@ -289,7 +289,7 @@ copyScripts() {
 }
 
 imp_scripts() {
-    COMPILE_SCRIPT="$GITPATH/compile_setup.sh"
+    COMPILE_SCRIPT="$GITPATH/execution_scripts/compile_setup.sh"
     if [ -f "$COMPILE_SCRIPT" ]; then
         chmod +x "$COMPILE_SCRIPT"
         printf "${YELLOW}Running compile.sh...${RC}\n"
@@ -305,7 +305,7 @@ imp_scripts() {
         exit 1
     fi
     
-    NUMLOCK_SCRIPT="$GITPATH/numlock.sh"
+    NUMLOCK_SCRIPT="$GITPATH/execution_scripts/numlock.sh"
     if [ -f "$NUMLOCK_SCRIPT" ]; then
         chmod +x "$NUMLOCK_SCRIPT"
         printf "${YELLOW}Running numlock.sh...${RC}\n"
@@ -321,7 +321,7 @@ imp_scripts() {
         exit 1
     fi
     
-    YAY_SCRIPT="$GITPATH/yay_setup.sh"
+    YAY_SCRIPT="$GITPATH/execution_scripts/yay_setup.sh"
     if [ -f "$YAY_SCRIPT" ]; then
         chmod +x "$YAY_SCRIPT"
         printf "${YELLOW}Running yay_setup.sh...${RC}\n"
@@ -337,7 +337,7 @@ imp_scripts() {
         exit 1
     fi
 
-    ROFINM_SCRIPT="$GITPATH/rofi_nm.sh"
+    ROFINM_SCRIPT="$GITPATH/execution_scripts/rofi_nm.sh"
     if [ -f "$ROFINM_SCRIPT" ]; then
         chmod +x "$ROFINM_SCRIPT"
         printf "${YELLOW}Running rofi_nm.sh...${RC}\n"
