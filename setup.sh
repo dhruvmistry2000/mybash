@@ -336,6 +336,22 @@ imp_scripts() {
         printf"${RED}yay_setup.sh not found at $YAY_SCRIPT${RC}\n"
         exit 1
     fi
+
+    ROFINM_SCRIPT="$GITPATH/rofi_nm.sh"
+    if [ -f "$ROFINM_SCRIPT" ]; then
+        chmod +x "$ROFINM_SCRIPT"
+        printf "${YELLOW}Running rofi_nm.sh...${RC}\n"
+        "$ROFINM_SCRIPT"
+        if [ $? -eq 0 ]; then
+            printf "${GREEN}rofi_nm.sh executed successfully${RC}\n"
+        else
+            printf "${RED}rofi_nm.sh execution failed${RC}\n"
+            exit 1
+        fi
+    else
+        printf"${RED}rofi_nm.sh not found at $ROFINM_SCRIPT${RC}\n"
+        exit 1
+    fi
 }
 
 

@@ -71,7 +71,10 @@ alias snano='sedit'
 alias vim='nvim'
 alias linutil='curl -fsSL https://christitus.com/linux | sh'
 alias bluetooth='~/.scripts/bluetooth.sh'
-alias wifi='~/.scripts/wifi.sh'
+# Start of Selection
+export PATH="$PATH:$HOME/Github/rofi-network-manager/src"
+alias wifi='ronema'
+# End of Selection
 
 
 # To have colors for ls and all grep commands such as grep, egrep and zgrep
