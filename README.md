@@ -13,4 +13,9 @@ This setup script installs and configures various tools and custom configuration
 * Easy setup for Wi-Fi Management using Rofi Network Manager
 * Easy setup for Bluetooth Management using blueman-manager
 
-To apply these configurations, run the following command:
+# Installation Instructions
+To install and configure the project, execute the following command in your terminal:
+```bash
+curl -sSL https://raw.githubusercontent.com/dhruvmistry2000/mybash/master/setup.
+sh | bash
+```
