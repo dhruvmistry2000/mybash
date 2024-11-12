@@ -354,7 +354,6 @@ imp_scripts() {
     fi
 }
 
-
 checkEnv
 installDepend
 installStarshipAndFzf
@@ -363,7 +362,6 @@ install_additional_dependencies
 create_fastfetch_config
 copyScripts
 imp_scripts
-
 
 if linkConfig; then
     printf "${GREEN}Done! Restart your shell to see the changes.${RC}\n"
