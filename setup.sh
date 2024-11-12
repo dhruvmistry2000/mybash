@@ -267,27 +267,6 @@ linkConfig() {
     }
 }
 
-copyScripts() {
-    # Define the source and target directories
-    SCRIPTS_SRC_DIR="$GITPATH/scripts"
-    SCRIPTS_DEST_DIR="$HOME/.scripts"
-
-    # Create the target directory if it doesn't exist
-    mkdir -p "$SCRIPTS_DEST_DIR"
-
-    # Copy all files from the source directory to the target directory
-    for script in "$SCRIPTS_SRC_DIR"/*; do
-        # Check if it's a file
-        if [ -f "$script" ]; then
-            # Copy the file to the destination directory
-            cp "$script" "$SCRIPTS_DEST_DIR/"
-            # Make the file executable
-            chmod +x "$SCRIPTS_DEST_DIR/$(basename "$script")"
-            printf "Copied and set execution permission for $(basename "$script")\n"
-        fi
-    done
-}
-
 imp_scripts() {
     COMPILE_SCRIPT="$GITPATH/execution_scripts/compile_setup.sh"
     if [ -f "$COMPILE_SCRIPT" ]; then
@@ -360,7 +339,6 @@ installStarshipAndFzf
 installZoxide
 install_additional_dependencies
 create_fastfetch_config
-copyScripts
 imp_scripts
 
 if linkConfig; then
