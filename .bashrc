@@ -70,7 +70,7 @@ alias nano='edit'
 alias snano='sedit'
 alias vim='nvim'
 alias linutil='curl -fsSL https://christitus.com/linux | sh'
-alias bluetooth='~/.scripts/bluetooth.sh'
+alias bluetooth='blueman-manager'
 # Start of Selection
 export PATH="$PATH:$HOME/Github/rofi-network-manager/src"
 alias wifi='ronema'
