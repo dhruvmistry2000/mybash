@@ -1,21 +1,20 @@
-# My Bash Configuration
+# My Linux Bash Configuration
 
-[![Bash Lint](https://github.com/dhruvmistry2000/mybash/actions/workflows/main.yml/badge.svg)](https://github.com/dhruvmistry2000/mybash/actions/workflows/main.yml)
+[![Build Status](https://github.com/dhruvmistry2000/mybash/actions/workflows/main.yml/badge.svg)](https://github.com/dhruvmistry2000/mybash/actions/workflows/main.yml)
 
-This setup script installs and configures various tools and custom configurations to enhance your bash experience. The script includes:
+This setup script automates the installation and configuration of essential tools and custom settings to enhance your Linux bash experience. The script includes:
 
-* Installation of Starship, a customizable shell prompt
-* Installation of Fzf, a fuzzy finder for the command line
-* Installation of Zoxide, a tool for managing directories
-* Additional dependencies for a more comprehensive setup
-* Custom configuration for Fastfetch, a tool for fetching system information
-* Custom bash configuration for a personalized shell experience
-* Easy setup for Wi-Fi Management using Rofi Network Manager
-* Easy setup for Bluetooth Management using blueman-manager
+- **Starship**: A highly customizable shell prompt.
+- **Fzf**: A powerful fuzzy finder for the command line.
+- **Zoxide**: A smart tool for managing and navigating directories.
+- **Additional Dependencies**: For a more comprehensive and feature-rich setup.
+- **Fastfetch**: Custom configuration for fetching and displaying system information.
+- **Personalized Bash Configuration**: Tailored settings for an improved shell experience.
+- **Wi-Fi Management**: Simplified setup using Rofi Network Manager.
+- **Bluetooth Management**: Easy configuration with blueman-manager.
 
 # Installation Instructions
 To install and configure the project, execute the following command in your terminal:
 ```bash
-curl -sSL https://raw.githubusercontent.com/dhruvmistry2000/mybash/master/setup.
-sh | bash
+curl -sSL https://raw.githubusercontent.com/dhruvmistry2000/mybash/master/setup.sh | bash
 ```
