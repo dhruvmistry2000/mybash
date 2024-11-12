@@ -1,7 +1,7 @@
 #!/bin/bash
 set -e
 
-REPO_URL="https://github.com/yourusername/rofi-network-manager.git"
+REPO_URL="https://github.com/P3rf/rofi-network-manager.git"
 DIR_NAME="$HOME/Github/rofi-network-manager"
 
 if [ ! -d "$DIR_NAME" ]; then
