@@ -10,10 +10,7 @@ This setup script installs and configures various tools and custom configuration
 * Additional dependencies for a more comprehensive setup
 * Custom configuration for Fastfetch, a tool for fetching system information
 * Custom bash configuration for a personalized shell experience
-* Also add easy setting for wifi and bluetooth
+* Easy setup for Wi-Fi Management using Rofi Network Manager
+* Easy setup for Bluetooth Management using blueman-manager
 
 To apply these configurations, run the following command:
-
-```bash
-curl -sSL https://raw.githubusercontent.com/dhruvmistry2000/mybash/main/setup.sh | bash
-```
