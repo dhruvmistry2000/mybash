@@ -18,7 +18,6 @@ if [ -d "$REPO_DIR" ]; then
         printf "${GREEN}Successfully pulled mybash repository${RC}\n"
     else
         printf "${RED}Failed to pull mybash repository${RC}\n"
-        exit 1
     fi
 else
     printf "${YELLOW}Cloning mybash repository into: $REPO_DIR${RC}\n"
@@ -27,7 +26,6 @@ else
         printf "${GREEN}Successfully cloned mybash repository${RC}\n"
     else
         printf "${RED}Failed to clone mybash repository${RC}\n"
-        exit 1
     fi
 fi
 # Define variables for commands and paths
@@ -46,7 +44,6 @@ checkEnv() {
     for req in $REQUIREMENTS; do
         if ! command_exists "$req"; then
             printf "${RED}To run me, you need: $REQUIREMENTS${RC}\n"
-            exit 1
         fi
     done
 
@@ -62,7 +59,6 @@ checkEnv() {
 
     if [ -z "$PACKAGER" ]; then
         printf "${RED}Can't find a supported package manager${RC}\n"
-        exit 1
     fi
 
     if command_exists sudo; then
@@ -79,7 +75,6 @@ checkEnv() {
     GITPATH=$(dirname "$(realpath "$0")")
     if [ ! -w "$GITPATH" ]; then
         printf "${RED}Can't write to $GITPATH${RC}\n"
-        exit 1
     fi
 
     ## Check SuperUser Group
@@ -95,7 +90,6 @@ checkEnv() {
     ## Check if member of the sudo group.
     if ! groups | grep -q "$SUGROUP"; then
         printf "${RED}You need to be a member of the sudo group to run me!${RC}\n"
-        exit 1
     fi
 }
 
@@ -122,7 +116,6 @@ installDepend() {
             AUR_HELPER="paru"
         else
             printf "No AUR helper found. Please install yay or paru.\n"
-            exit 1
         fi
         ${AUR_HELPER} --noconfirm -S ${DEPENDENCIES}
     elif [ "$PACKAGER" = "dnf" ]; then
@@ -160,7 +153,6 @@ installStarshipAndFzf() {
 
     if ! curl -sS https://starship.rs/install.sh | sh; then
         printf "${RED}Something went wrong during starship install!${RC}\n"
-        exit 1
     fi
     if command_exists fzf; then
         printf "Fzf already installed\n"
@@ -178,7 +170,6 @@ installZoxide() {
 
     if ! curl -sS https://raw.githubusercontent.com/ajeetdsouza/zoxide/main/install.sh | sh; then
         printf "${RED}Something went wrong during zoxide install!${RC}\n"
-        exit 1
     fi
 }
 
@@ -205,8 +196,7 @@ install_additional_dependencies() {
             ;;
         *)
             printf "No supported package manager found. Please install neovim manually.\n"
-            exit 1
-            ;;
+        ;;
     esac
 }
 
@@ -221,11 +211,9 @@ create_fastfetch_config() {
             printf "${GREEN}fastfetch.sh executed successfully${RC}\n"
         else
             printf "${RED}fastfetch.sh execution failed${RC}\n"
-            exit 1
         fi
     else
         printf "${RED}fastfetch.sh not found at $YAY_SCRIPT${RC}\n"
-        exit 1
     fi
     ## Get the correct user home directory.
     USER_HOME=$(getent passwd "${SUDO_USER:-$USER}" | cut -d: -f6)
@@ -239,7 +227,6 @@ create_fastfetch_config() {
     fi
     ln -svf "$GITPATH/config.jsonc" "$USER_HOME/.config/fastfetch/config.jsonc" || {
         printf "${RED}Failed to create symbolic link for fastfetch config${RC}\n"
-        exit 1
     }
 }
 
@@ -252,18 +239,15 @@ linkConfig() {
         printf "${YELLOW}Moving old bash config file to $USER_HOME/.bashrc.bak${RC}\n"
         if ! mv "$OLD_BASHRC" "$USER_HOME/.bashrc.bak"; then
             printf "${RED}Can't move the old bash config file!${RC}\n"
-            exit 1
         fi
     fi
 
     printf "${YELLOW}Linking new bash config file...${RC}\n"
     ln -svf "$GITPATH/.bashrc" "$USER_HOME/.bashrc" || {
         printf "${RED}Failed to create symbolic link for .bashrc${RC}\n"
-        exit 1
     }
     ln -svf "$GITPATH/starship.toml" "$USER_HOME/.config/starship.toml" || {
         printf "${RED}Failed to create symbolic link for starship.toml${RC}\n"
-        exit 1
     }
 }
 
@@ -277,11 +261,9 @@ imp_scripts() {
             printf "${GREEN}compile.sh executed successfully${RC}\n"
         else
             printf "${RED}compile.sh execution failed${RC}\n"
-            exit 1
         fi
     else
         printf"${RED}compile.sh not found at $COMPILE_SCRIPT${RC}\n"
-        exit 1
     fi
     
     NUMLOCK_SCRIPT="$GITPATH/execution_scripts/numlock.sh"
@@ -293,11 +275,9 @@ imp_scripts() {
             printf "${GREEN}numlock.sh executed successfully${RC}\n"
         else
             printf "${RED}numlock.sh execution failed${RC}\n"
-            exit 1
         fi
     else
         printf"${RED}numlock.sh not found at $NUMLOCK_SCRIPT${RC}\n"
-        exit 1
     fi
     
     YAY_SCRIPT="$GITPATH/execution_scripts/yay_setup.sh"
@@ -309,11 +289,9 @@ imp_scripts() {
             printf "${GREEN}yay_setup.sh executed successfully${RC}\n"
         else
             printf "${RED}yay_setup.sh execution failed${RC}\n"
-            exit 1
         fi
     else
         printf"${RED}yay_setup.sh not found at $YAY_SCRIPT${RC}\n"
-        exit 1
     fi
 
     ROFINM_SCRIPT="$GITPATH/execution_scripts/rofi_nm.sh"
@@ -325,11 +303,9 @@ imp_scripts() {
             printf "${GREEN}rofi_nm.sh executed successfully${RC}\n"
         else
             printf "${RED}rofi_nm.sh execution failed${RC}\n"
-            exit 1
         fi
     else
         printf"${RED}rofi_nm.sh not found at $ROFINM_SCRIPT${RC}\n"
-        exit 1
     fi
 }
 
