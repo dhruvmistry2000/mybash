@@ -2,9 +2,9 @@
 
 # Define color variables
 RC='\033[0m'        # Reset
-GREEN='\033[0;32m'  # Green
-YELLOW='\033[0;33m' # Yellow
-BLUE='\033[0;34m'   # Blue
+GREEN='\033[32m'    # Green
+YELLOW='\033[33m'   # Yellow
+BLUE='\033[34m'     # Blue
 
 # Create a script to toggle numlock
 create_file() {

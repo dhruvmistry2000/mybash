@@ -1,9 +1,9 @@
 #!/bin/bash
 
 # Define color variables for output
-YELLOW='\033[1;33m'
-GREEN='\033[1;32m'
-RED='\033[1;31m'
+YELLOW='\033[33m'
+GREEN='\033[32m'
+RED='\033[31m'
 RC='\033[0m'  # Reset color
 
 # Define the directory name for yay
