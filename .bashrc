@@ -167,23 +167,23 @@ alias bd='cd "$OLDPWD"'
 alias rmd='/bin/rm  --recursive --force --verbose '
 
 # Alias's for multiple directory listing commands
-alias la='ls -Alh'                # show hidden files
-alias ls='ls -aFh --color=always' # add colors and file type extensions
-alias lx='ls -lXBh'               # sort by extension
-alias lk='ls -lSrh'               # sort by size
-alias lc='ls -ltcrh'              # sort by change time
-alias lu='ls -lturh'              # sort by access time
-alias lr='ls -lRh'                # recursive ls
-alias lt='ls -ltrh'               # sort by date
-alias lm='ls -alh |more'          # pipe through 'more'
-alias lw='ls -xAh'                # wide listing format
-alias ll='ls -Fls'                # long listing format
-alias labc='ls -lap'              # alphabetical sort
-alias lf="ls -l | egrep -v '^d'"  # files only
-alias ldir="ls -l | egrep '^d'"   # directories only
-alias lla='ls -Al'                # List and Hidden Files
-alias las='ls -A'                 # Hidden Files
-alias lls='ls -l'                 # List
+alias la='lsd -Alh'                # show hidden files
+alias ls='lsd -aFh --color=always' # add colors and file type extensions
+alias lx='lsd -lXBh'               # sort by extension
+alias lk='lsd -lSrh'               # sort by size
+alias lc='lsd -ltcrh'              # sort by change time
+alias lu='lsd -lturh'              # sort by access time
+alias lr='lsd -lRh'                # recursive ls
+alias lt='lsd -ltrh'               # sort by date
+alias lm='lsd -alh |more'          # pipe through 'more'
+alias lw='lsd -xAh'                # wide listing format
+alias ll='lsd -Fls'                # long listing format
+alias labc='lsd -lap'              # alphabetical sort
+alias lf="lsd -l | egrep -v '^d'"  # files only
+alias ldir="lsd -l | egrep '^d'"   # directories only
+alias lla='lsd -Al'                # List and Hidden Files
+alias las='lsd -A'                 # Hidden Files
+alias lls='lsd -l'                 # List
 
 # alias chmod commands
 alias mx='chmod a+x'
