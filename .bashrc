@@ -208,7 +208,7 @@ extract() {
 		fi
 	done
 }
-1
+
 # Automatically do an ls after each cd, z, or zoxide
 cd ()
 {
