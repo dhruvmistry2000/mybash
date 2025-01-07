@@ -119,17 +119,9 @@ alias .....='cd ../../../..'
 # Alias's for multiple directory listing commands
 alias la='lsd -Alh'                # show hidden files
 alias ls='lsd -aFh --color=always' # add colors and file type extensions
-alias lx='lsd -lXBh'               # sort by extension
 alias lk='lsd -lSrh'               # sort by size
-alias lc='lsd -ltcrh'              # sort by change time
-alias lu='lsd -lturh'              # sort by access time
 alias lr='lsd -lRh'                # recursive ls
 alias lt='lsd -ltrh'               # sort by date
-alias lm='lsd -alh |more'          # pipe through 'more'
-alias lw='lsd -xAh'                # wide listing format
-alias ll='lsd -Fls'                # long listing format
-alias labc='lsd -lap'              # alphabetical sort
-alias lf="lsd -l | egrep -v '^d'"  # files only
 alias ldir="lsd -l | egrep '^d'"   # directories only
 alias lla='lsd -Al'                # List and Hidden Files
 alias las='lsd -A'                 # Hidden Files
@@ -152,10 +144,6 @@ alias f="find . | grep "
 
 # Count all files (recursively) in the current folder
 alias countfiles="for t in files links directories; do echo \`find . -type \${t:0:1} | wc -l\` \$t; done 2> /dev/null"
-
-# Alias's for safe and forced reboots
-alias rebootsafe='sudo shutdown -r now'
-alias rebootforce='sudo shutdown -r -n now'
 
 # Alias's to show disk space and space used in a folder
 alias diskspace="du -S | sort -n -r |more"
