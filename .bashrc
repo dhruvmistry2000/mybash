@@ -1,9 +1,6 @@
 #!/usr/bin/env bash
 iatest=$(expr index "$-" i)
 
-#######################################################
-# SOURCED ALIAS'S AND SCRIPTS BY zachbrowne.me
-#######################################################
 if [ -f /usr/bin/fastfetch ]; then
 	fastfetch
 fi
@@ -19,10 +16,6 @@ if [ -f /usr/share/bash-completion/bash_completion ]; then
 elif [ -f /etc/bash_completion ]; then
 	. /etc/bash_completion
 fi
-
-#######################################################
-# EXPORTS
-#######################################################
 
 # Disable the bell
 if [[ $iatest -gt 0 ]]; then bind "set bell-style visible"; fi
@@ -52,7 +45,6 @@ export XDG_CACHE_HOME="$HOME/.cache"
 # Allow ctrl-S for history navigation (with ctrl-R)
 [[ $- == *i* ]] && stty -ixon
 
-# Ignore case on auto-completion
 # Note: bind used instead of sticking these in .inputrc
 if [[ $iatest -gt 0 ]]; then bind "set completion-ignore-case on"; fi
 
@@ -98,18 +90,6 @@ export LESS_TERMCAP_se=$'\E[0m'
 export LESS_TERMCAP_so=$'\E[01;44;33m'
 export LESS_TERMCAP_ue=$'\E[0m'
 export LESS_TERMCAP_us=$'\E[01;32m'
-
-#######################################################
-# MACHINE SPECIFIC ALIAS'S
-#######################################################
-
-# Alias's for SSH
-# alias SERVERNAME='ssh YOURWEBSITE.com -l USERNAME -p PORTNUMBERHERE'
-
-# Alias's to change the directory
-alias web='cd /var/www/html'
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-
 # Edit this .bashrc file
 alias ebrc='edit ~/.bashrc'
 
@@ -134,7 +114,6 @@ alias freshclam='sudo freshclam'
 alias vi='vim'
 alias svi='sudo vi'
 alias vis='vim "+set si"'
-
 
 # Change directory aliases
 alias home='cd ~'
@@ -226,10 +205,6 @@ alias docker-clean=' \
   docker network prune -f ; \
   docker volume prune -f '
 
-#######################################################
-# SPECIAL FUNCTIONS
-#######################################################
-# Extracts any archive(s) (if unp isn't installed)
 extract() {
 	for archive in "$@"; do
 		if [ -f "$archive" ]; then
@@ -266,113 +241,6 @@ cd ()
 # Returns the last 2 fields of the working directory
 pwdtail() {
 	pwd | awk -F/ '{nlast = NF -1;print $nlast"/"$NF}'
-}
-
-# Show the current distribution
-distribution () {
-    local dtype="unknown"  # Default to unknown
-
-    # Use /etc/os-release for modern distro identification
-    if [ -r /etc/os-release ]; then
-        source /etc/os-release
-        case $ID in
-            fedora|rhel|centos)
-                dtype="redhat"
-                ;;
-            sles|opensuse*)
-                dtype="suse"
-                ;;
-            ubuntu|debian)
-                dtype="debian"
-                ;;
-            gentoo)
-                dtype="gentoo"
-                ;;
-            arch|manjaro)
-                dtype="arch"
-                ;;
-            slackware)
-                dtype="slackware"
-                ;;
-            *)
-                # Check ID_LIKE only if dtype is still unknown
-                if [ -n "$ID_LIKE" ]; then
-                    case $ID_LIKE in
-                        *fedora*|*rhel*|*centos*)
-                            dtype="redhat"
-                            ;;
-                        *sles*|*opensuse*)
-                            dtype="suse"
-                            ;;
-                        *ubuntu*|*debian*)
-                            dtype="debian"
-                            ;;
-                        *gentoo*)
-                            dtype="gentoo"
-                            ;;
-                        *arch*)
-                            dtype="arch"
-                            ;;
-                        *slackware*)
-                            dtype="slackware"
-                            ;;
-                    esac
-                fi
-
-                # If ID or ID_LIKE is not recognized, keep dtype as unknown
-                ;;
-        esac
-    fi
-
-    echo $dtype
-}
-
-
-DISTRIBUTION=$(distribution)
-if [ "$DISTRIBUTION" = "redhat" ] || [ "$DISTRIBUTION" = "arch" ]; then
-      alias cat='bat'
-else
-      alias cat='batcat'
-fi 
-
-# Show the current version of the operating system
-ver() {
-    local dtype
-    dtype=$(distribution)
-
-    case $dtype in
-        "redhat")
-            if [ -s /etc/redhat-release ]; then
-                cat /etc/redhat-release
-            else
-                cat /etc/issue
-            fi
-            uname -a
-            ;;
-        "suse")
-            cat /etc/SuSE-release
-            ;;
-        "debian")
-            lsb_release -a
-            ;;
-        "gentoo")
-            cat /etc/gentoo-release
-            ;;
-        "arch")
-            cat /etc/os-release
-            ;;
-        "slackware")
-            cat /etc/slackware-version
-            ;;
-        *)
-            if [ -s /etc/issue ]; then
-                cat /etc/issue
-            else
-                echo "Error: Unknown distribution"
-                exit 1
-            fi
-            ;;
-    esac
 }
 
 # Automatically install the needed support files for this .bashrc file
@@ -417,8 +285,7 @@ if [[ $- == *i* ]]; then
 fi
 
 export PATH=$PATH:"$HOME/.local/bin:$HOME/.cargo/bin:/var/lib/flatpak/exports/bin:/.local/share/flatpak/exports/bin"
+export FZF_DEFAULT_OPTS="--info=inline --border --margin=1 --padding=1  --marker=">" --pointer="◆" --separator="─""
 
 eval "$(starship init bash)"
 eval "$(zoxide init bash)"
-
-export FZF_DEFAULT_OPTS="--info=inline --border --margin=1 --padding=1  --marker=">" --pointer="◆" --separator="─""
