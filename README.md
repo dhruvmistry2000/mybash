@@ -14,7 +14,6 @@ This setup script automates the installation and configuration of essential tool
 - **Bluetooth Management**: Easy configuration with blueman-manager.
 
 # Installation Instructions
-To install and configure the project, execute the following command in your terminal:
-```bash
+To install and configure the project, execute the following command in your terminal:```bash
 curl -sSL https://raw.githubusercontent.com/dhruvmistry2000/mybash/master/setup.sh | bash
 ```
