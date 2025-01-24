@@ -55,12 +55,10 @@ alias spico='sedit'
 alias nano='edit'
 alias snano='sedit'
 alias vim='vim'
-alias linutil='curl -fsSL https://christitus.com/linux | sh'
 alias bluetooth='blueman-manager'
-# Start of Selection
-export PATH="$PATH:$HOME/Github/rofi-network-manager/src"
 alias wifi='ronema'
-# End of Selection
+alias linutil='curl -fsSL https://christitus.com/linux | sh'
+
 
 # To have colors for ls and all grep commands such as grep, egrep and zgrep
 export CLICOLOR=1

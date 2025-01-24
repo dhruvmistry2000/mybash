@@ -25,10 +25,13 @@ else
     echo -e "${RED}setup.sh not found in $DIR_NAME${RC}"
 fi
 
-CONFIG_FILE="$DIR_NAME/src/ronema.conf"
+CONFIG_FILE="~/.config/ronema"
 if [ -f "$CONFIG_FILE" ]; then
     echo -e "${YELLOW}Updating configuration file...${RC}"
     sed -i 's/^THEME=.*/THEME="nord.rasi"/' "$CONFIG_FILE"
 else
     echo -e "${RED}$CONFIG_FILE not found.${RC}"
 fi
+echo -e "${GREEN}Cleaning up...${RC}"
+cd ..
+rm -rf "$DIR_NAME"
