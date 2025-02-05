@@ -103,6 +103,9 @@ alias multitail='multitail --no-repeat -c'
 alias vi='vim'
 alias svi='sudo vim'
 alias vis='vim "+set si"'
+alias cursor='$HOME/Downloads/cursor.AppImage .' #Only for my personal use
+alias copy='xsel --input --clipboard'
+alias paste='xsel --output --clipboard'
 
 # Alias's for multiple directory listing commands
 alias la='lsd -Alh'                # show hidden files
