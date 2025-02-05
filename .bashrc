@@ -104,14 +104,6 @@ alias vi='vim'
 alias svi='sudo vim'
 alias vis='vim "+set si"'
 
-# Change directory aliases
-alias home='cd ~'
-alias cd..='cd ..'
-alias ..='cd ..'
-alias ...='cd ../..'
-alias ....='cd ../../..'
-alias .....='cd ../../../..'
-
 # Alias's for multiple directory listing commands
 alias la='lsd -Alh'                # show hidden files
 alias ls='lsd -aFh --color=always' # add colors and file type extensions
