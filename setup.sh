@@ -309,12 +309,22 @@ imp_scripts() {
     fi
 }
 
+copyVimrc() {
+    if [ -f "$REPO_DIR/.vimrc" ]; then
+        cp "$REPO_DIR/.vimrc" "$HOME/.vimrc"
+        printf "${GREEN}.vimrc copied to $HOME successfully!${RC}\n"
+    else
+        printf "${RED}.vimrc not found in $REPO_DIR${RC}\n"
+    fi
+}
+
 checkEnv
 installDepend
 installStarshipAndFzf
 installZoxide
 install_additional_dependencies
 create_fastfetch_config
+copyVimrc
 imp_scripts
 
 if linkConfig; then

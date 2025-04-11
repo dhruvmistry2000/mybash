@@ -1,0 +1,17 @@
+set number              
+set relativenumber      
+syntax enable           
+set background=dark     
+set expandtab           
+set tabstop=4           
+set shiftwidth=4        
+set softtabstop=4       
+set smartindent         
+set autoindent          
+set smarttab            
+set wrap                
+set showmatch           
+set incsearch           
+set hlsearch            
+set ruler               
+set linespace=1         
