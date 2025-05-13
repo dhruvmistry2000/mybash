@@ -106,6 +106,7 @@ alias vis='vim "+set si"'
 alias cursor='$HOME/Downloads/cursor.AppImage .' #Only for my personal use
 alias copy='xsel --input --clipboard'
 alias paste='xsel --output --clipboard'
+alias hf='history | grep -i'
 
 # Alias's for multiple directory listing commands
 alias la='lsd -Alh'                # show hidden files
@@ -216,3 +217,8 @@ export NVM_DIR="$HOME/.config/nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 export PATH="/usr/local/bin:$PATH"
+# The next line updates PATH for the Google Cloud SDK.
+if [ -f '/home/dhruv/Downloads/google-cloud-sdk/path.bash.inc' ]; then . '/home/dhruv/Downloads/google-cloud-sdk/path.bash.inc'; fi
+
+# The next line enables shell command completion for gcloud.
+if [ -f '/home/dhruv/Downloads/google-cloud-sdk/completion.bash.inc' ]; then . '/home/dhruv/Downloads/google-cloud-sdk/completion.bash.inc'; fi
