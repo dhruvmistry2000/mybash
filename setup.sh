@@ -332,6 +332,7 @@ install_additional_dependencies
 create_fastfetch_config
 copyVimrc
 imp_scripts
+dockerinstall
 
 if linkConfig; then
     printf "${GREEN}Done! Restart your shell to see the changes.${RC}\n"
