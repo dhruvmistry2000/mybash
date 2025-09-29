@@ -304,10 +304,14 @@ copyVimrc() {
     fi
 }
 dockerinstall(){
+    if command_exists docker; then
+        printf "${GREEN}Docker is already installed.${RC}\n"
+        return
+    fi
     printf "${YELLOW}Installing Docker...${RC}\n"
     curl -fsSL https://get.docker.com | bash
     ${SUDO_CMD} usermod -aG docker $USER
-    printf "${GREEN}Docker installed successfully! Please log out and log back in to apply group"
+    printf "${GREEN}Docker installed successfully! Please log out and log back in to apply group.${RC}\n"
 }
 
 checkEnv
