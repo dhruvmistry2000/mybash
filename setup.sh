@@ -251,6 +251,42 @@ linkConfig() {
     }
 }
 
+install_television() {
+
+    CONFIG_DIR="$HOME/.config/television"
+    SRC_CONFIG_DIR="$GITPATH/config/television"
+
+    # Check if already installed
+    if command_exists television; then
+        printf "${GREEN}Television already installed${RC}\n"
+    else
+        printf "${YELLOW}Installing Television...${RC}\n"
+        if ! curl -fsSL https://alexpasmantier.github.io/television/install.sh | bash; then
+            printf "${RED}Something went wrong during television install!${RC}\n"
+            return 1
+        fi
+    fi
+
+    # Create config directory if not exists
+    mkdir -p "$CONFIG_DIR"
+
+    # Backup existing config if present
+    if [ -d "$CONFIG_DIR" ] && [ "$(ls -A "$CONFIG_DIR")" ]; then
+        printf "${YELLOW}Backing up existing Television config...${RC}\n"
+        mv "$CONFIG_DIR" "${CONFIG_DIR}.bak"
+        mkdir -p "$CONFIG_DIR"
+    fi
+
+    # Copy configs
+    if [ -d "$SRC_CONFIG_DIR" ]; then
+        printf "${YELLOW}Copying Television config files...${RC}\n"
+        cp -r "$SRC_CONFIG_DIR/"* "$CONFIG_DIR/"
+        printf "${GREEN}Television config installed successfully!${RC}\n"
+    else
+        printf "${RED}Config directory not found at $SRC_CONFIG_DIR${RC}\n"
+    fi
+}
+
 imp_scripts() {
     COMPILE_SCRIPT="$GITPATH/execution_scripts/compile_setup.sh"
     if [ -f "$COMPILE_SCRIPT" ]; then
@@ -321,6 +357,7 @@ installZoxide
 install_additional_dependencies
 create_fastfetch_config
 copyVimrc
+install_television
 imp_scripts
 dockerinstall
 
