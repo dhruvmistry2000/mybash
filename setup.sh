@@ -23,7 +23,6 @@ else
     printf "${YELLOW}Cloning mybash repository into: $REPO_DIR${RC}\n"
     git clone "$REPO_URL" "$REPO_DIR"
     if [ $? -eq 0 ]; then
-        printf "${GREEN}Successfully cloned mybash repository${RC}\n"
     else
         printf "${RED}Failed to clone mybash repository${RC}\n"
     fi
@@ -328,6 +327,19 @@ imp_scripts() {
         fi
     else
         printf"${RED}yay_setup.sh not found at $YAY_SCRIPT${RC}\n"
+    fi
+    NEOVIM_SCRIPT="$GITPATH/execution_scripts/neovim.sh"
+    if [ -f "$NEOVIM_SCRIPT" ]; then
+        chmod +x "$NEOVIM_SCRIPT"
+        printf "${YELLOW}Running neovim.sh...${RC}\n"
+        "$NEOVIM_SCRIPT"
+        if [ $? -eq 0 ]; then
+            printf "${GREEN}neovim.sh executed successfully${RC}\n"
+        else
+            printf "${RED}neovim.sh execution failed${RC}\n"
+        fi
+    else
+        printf"${RED}neovim.sh not found at $NEOVIM_SCRIPT${RC}\n"
     fi
 }
 
