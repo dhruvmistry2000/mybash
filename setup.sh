@@ -23,6 +23,7 @@ else
     printf "${YELLOW}Cloning mybash repository into: $REPO_DIR${RC}\n"
     git clone "$REPO_URL" "$REPO_DIR"
     if [ $? -eq 0 ]; then
+        printf "${GREEN}Successfully cloned mybash repository${RC}\n"
     else
         printf "${RED}Failed to clone mybash repository${RC}\n"
     fi
